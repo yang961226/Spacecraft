@@ -1,0 +1,24 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    apply from: 'dependencies.gradle'
+    apply from: 'projectConfig.gradle'
+    repositories {
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/central' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://jitpack.io' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:$androidGradlePluginVersion"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion")
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

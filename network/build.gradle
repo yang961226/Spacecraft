@@ -1,0 +1,45 @@
+plugins {
+    id 'com.android.library'
+    id 'dagger.hilt.android.plugin'
+}
+apply from: "../basic.gradle"
+
+android {
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation project(":core")
+
+    //Retrofit
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+    implementation "com.google.code.gson:gson:$gsonVerison"
+
+    //Okhttp
+    api "com.squareup.okhttp3:okhttp:$okhttpVersion"
+    api "com.squareup.okhttp3:logging-interceptor:$okhttpVersion"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    //Test
+    testImplementation "junit:junit:$jUnitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidJUnitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+}

@@ -1,0 +1,47 @@
+plugins {
+    id 'com.android.library'
+}
+apply from: "../basic.gradle"
+apply plugin: 'dagger.hilt.android.plugin'
+
+android {
+    defaultConfig {
+        versionCode 1
+        versionName "1.0"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    // Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+    //Android
+    api "androidx.appcompat:appcompat:$appcompatVersion"
+
+    // Lifecycle
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    api "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion"
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+    //Test
+    testImplementation "junit:junit:$jUnitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidJUnitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+
+}
