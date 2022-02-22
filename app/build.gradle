@@ -28,15 +28,11 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-
-    //通用功能库
-//    implementation project(path: ':app:common')
-    //首页（功能入口）
-//    implementation project(path: ':app:main')
-
     implementation project(path: ':network')
     implementation project(path: ':core')
     implementation project(path: ':ui')
+
+    implementation ("com.guolindev.permissionx:permissionx:$permissionXVersion")
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"

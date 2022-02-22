@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Spacecraft</string>
+    <string name="string_splash_title">WanAndroid</string>
+    <string name="string_splash_content">一个专业的Android社区</string>
 </resources>

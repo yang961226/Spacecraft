@@ -52,9 +52,6 @@ ext{
     //okhttp
     okhttpVersion="5.0.0-alpha.2"
 
-    //腾讯shadow插件化框架，https://github.com/Tencent/Shadow
-    shadowVersion="2.1.1"
-
     //PermissionX
     permissionXVersion="1.6.1"
 

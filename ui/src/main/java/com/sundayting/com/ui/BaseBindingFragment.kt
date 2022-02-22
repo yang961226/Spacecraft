@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import java.lang.reflect.ParameterizedType
@@ -13,7 +12,7 @@ import java.lang.reflect.ParameterizedType
 /**
  * 自动完成Binding的基类
  */
-abstract class BaseBindingFragment<T : ViewDataBinding> : Fragment() {
+abstract class BaseBindingFragment<T : ViewDataBinding> : BaseFragment() {
 
     private var _binding: T? = null
     protected val binding get() = checkNotNull(_binding) { "初始化binding失败" }
