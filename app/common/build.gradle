@@ -1,0 +1,16 @@
+apply plugin: 'com.android.library'
+apply from: "../../basic.gradle"
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+dependencies {
+
+    api project(path: ':core')
+    api project(path: ':network')
+    api project(path: ':ui')
+
+
+    //Test
+    testImplementation "junit:junit:$jUnitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidJUnitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+}

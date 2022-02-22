@@ -28,10 +28,10 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
-    implementation project(path: ':network')
-    implementation project(path: ':core')
-    implementation project(path: ':ui')
+    implementation project(path: ':app:common')
+    implementation project(path: ':app:home')
 
+    //permissionX
     implementation ("com.guolindev.permissionx:permissionx:$permissionXVersion")
 
     //Hilt

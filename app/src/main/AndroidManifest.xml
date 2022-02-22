@@ -25,6 +25,12 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
+
+        </activity>
+
     </application>
 
 </manifest>

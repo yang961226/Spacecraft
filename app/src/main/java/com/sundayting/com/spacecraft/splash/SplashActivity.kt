@@ -1,20 +1,42 @@
 package com.sundayting.com.spacecraft.splash
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.permissionx.guolindev.PermissionX
+import com.sundayting.com.spacecraft.MainActivity
 import com.sundayting.com.spacecraft.R
 import com.sundayting.com.ui.BaseActivity
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SplashActivity : BaseActivity() {
 
+    private val viewModel: SplashViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState
+                    .map { it.directToNextActivity }
+                    .distinctUntilChanged()
+                    .collect { toNext ->
+                        if (toNext) {
+                            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                            finish()
+                        }
+                    }
+
+            }
+        }
         requestPermission()
     }
 
@@ -27,14 +49,8 @@ class SplashActivity : BaseActivity() {
                 scope.showRequestReasonDialog(deniedList, tips, "申请", "稍后")
             }
             .request { _, _, _ ->
-                toNextActivity()
+                viewModel.hasPermission()
             }
-    }
-
-    private fun toNextActivity() = lifecycleScope.launch {
-        delay(1000L)
-        Toast.makeText(this@SplashActivity, "跳转", Toast.LENGTH_LONG).show()
-//        startActivity(Intent(this@SplashActivity,))
     }
 
 }

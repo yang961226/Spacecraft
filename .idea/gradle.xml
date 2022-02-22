@@ -11,6 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/app/common" />
+            <option value="$PROJECT_DIR$/app/home" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/network" />
             <option value="$PROJECT_DIR$/ui" />

@@ -21,7 +21,7 @@ android {
 }
 
 dependencies {
-    implementation project(":core")
+    api project(":core")
 
     //Retrofit
     api "com.squareup.retrofit2:retrofit:$retrofitVersion"
