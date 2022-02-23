@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_mine.xml" value="0.33229166666666665" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/project/src/main/res/layout/fragment_project.xml" value="0.33229166666666665" />
         <entry key="..\:/project/MyProject/Spacecraft/app/src/main/res/drawable-xxhdpi/ic_baseline_call_split_24.xml" value="0.1" />
         <entry key="..\:/project/MyProject/Spacecraft/app/src/main/res/drawable/selector_bottom_navigation_item.xml" value="0.162" />
         <entry key="..\:/project/MyProject/Spacecraft/app/src/main/res/layout/activity_main.xml" value="0.15312815338042382" />

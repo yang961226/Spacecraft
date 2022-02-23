@@ -36,6 +36,8 @@ dependencies {
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
+    implementation project(path: ':app:project')
+    implementation project(path: ':app:mine')
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     //Test
