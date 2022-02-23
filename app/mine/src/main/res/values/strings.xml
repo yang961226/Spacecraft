@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="string_login_to_register">还没有账号？<font color='#7885FF'>注册</font></string>
+    <string name="string_btn_login">登录</string>
+</resources>

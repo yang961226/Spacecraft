@@ -15,7 +15,7 @@ import java.lang.reflect.ParameterizedType
 abstract class BaseBindingFragment<T : ViewBinding> : BaseFragment() {
 
     private var _binding: T? = null
-    protected val binding get() = checkNotNull(_binding) { "初始化binding失败" }
+    protected val binding get() = checkNotNull(_binding) { "初始化binding失败或者binding未初始化，请确保在onCreateView()被调用之后再获取" }
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreateView(
