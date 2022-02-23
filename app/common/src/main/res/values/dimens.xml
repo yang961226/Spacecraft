@@ -6,4 +6,8 @@
     <dimen name="textMediumSize">16sp</dimen>
     <dimen name="textSmallSize">12sp</dimen>
 
+    <dimen name="padding_global">12dp</dimen>
+    <dimen name="set_padding">26dp</dimen>
+    <dimen name="dividing_line">30dp</dimen>
+
 </resources>
