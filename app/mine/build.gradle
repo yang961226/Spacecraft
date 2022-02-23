@@ -1,0 +1,12 @@
+apply plugin: 'com.android.library'
+apply from:"../../basic.gradle"
+
+dependencies {
+    implementation project(path: ':app:common')
+
+
+    //Test
+    testImplementation "junit:junit:$jUnitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidJUnitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+}
