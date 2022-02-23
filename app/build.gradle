@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
 
@@ -30,14 +30,14 @@ dependencies {
 
     implementation project(path: ':app:common')
     implementation project(path: ':app:home')
+    implementation project(path: ':app:project')
+    implementation project(path: ':app:mine')
 
     //permissionX
     implementation ("com.guolindev.permissionx:permissionx:$permissionXVersion")
 
     //Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
-    implementation project(path: ':app:project')
-    implementation project(path: ':app:mine')
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     //Test

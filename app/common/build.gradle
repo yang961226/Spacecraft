@@ -1,12 +1,18 @@
 apply plugin: 'com.android.library'
 apply from: "../../basic.gradle"
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 dependencies {
 
     api project(path: ':core')
     api project(path: ':network')
     api project(path: ':ui')
+
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
 
     //Test

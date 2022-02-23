@@ -1,9 +1,14 @@
 apply plugin: 'com.android.library'
 apply from:"../../basic.gradle"
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
 
 dependencies {
     implementation project(path: ':app:common')
 
+    //Hilt
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
 
     //Test
     testImplementation "junit:junit:$jUnitVersion"
