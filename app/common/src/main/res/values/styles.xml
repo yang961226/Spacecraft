@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="UsernameFieldStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="startIconDrawable">@drawable/ic_user</item>
+        <item name="android:inputType">text</item>
+        <item name="android:hint">账号</item>
+        <item name="hintTextColor">@color/primaryColor</item>
+    </style>
+
+    <style name="UsernameEditTextStyle">
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="PasswordFieldStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="startIconDrawable">@drawable/ic_lock</item>
+        <item name="endIconMode">password_toggle</item>
+        <item name="android:hint">密码</item>
+        <item name="hintTextColor">@color/primaryColor</item>
+    </style>
+
+</resources>
