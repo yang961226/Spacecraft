@@ -2,15 +2,15 @@ package com.sundayting.com.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
 
 /**
- * 自动完成Binding的基类
+ * 自动完成ViewBinding的基类
  */
-abstract class BaseBindingActivity<T : ViewDataBinding> : BaseActivity() {
+abstract class BaseBindingActivity<T : ViewBinding> : BaseActivity() {
 
     private var _binding: T? = null
     protected val binding: T get() = checkNotNull(_binding) { "初始化binding失败" }
