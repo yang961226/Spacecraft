@@ -2,21 +2,29 @@ package com.sundayting.com.mine.login
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.sundayting.com.common.widget.WaitDialogHelper
 import com.sundayting.com.common.widget.toast
+import com.sundayting.com.mine.UserViewModel
 import com.sundayting.com.mine.databinding.FragmentLoginBinding
 import com.sundayting.com.mine.register.RegisterFragment
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
 
-    private val viewModel by viewModels<LoginViewModel>()
+    @Inject
+    lateinit var dialogHelper: WaitDialogHelper
+
+    private val viewModel by activityViewModels<UserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +50,30 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
                 }
         }
 
-        // TODO: 改用传统fragment传参？测试github提交，无意义
+        //监听加载框
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.loading }
+                .distinctUntilChanged()
+                .collect { loading ->
+                    if (loading) {
+                        dialogHelper.showLoadingDialog("登陆中，请稍后")
+                    } else {
+                        dialogHelper.dismissDialog()
+                    }
+                }
+        }
+
+        //监听登陆成功
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .mapNotNull { it.userBean }
+                .collect {
+                    findNavController().navigateUp()
+                }
+        }
+
+        // TODO: 改用传统fragment传参？
         findNavController().currentBackStackEntry!!.let { entry ->
             entry.savedStateHandle.getLiveData<Boolean>(RegisterFragment.REGISTER_SUCCESSFUL)
                 .observe(entry) {
