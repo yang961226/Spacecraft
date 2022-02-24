@@ -5,7 +5,12 @@
       <map>
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/button_ripple.xml" value="0.1" />
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/ripple_bg_primary_light.xml" value="0.1" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16.xml" value="0.2815" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16_theme_2.xml" value="0.2135" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/svg_add.xml" value="0.1" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/fragment_home.xml" value="0.4" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/layout_search_bar.xml" value="0.4" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/test.xml" value="0.33229166666666665" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_llogin.xml" value="0.17889492753623187" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_login.xml" value="0.4" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_mine.xml" value="0.4" />
