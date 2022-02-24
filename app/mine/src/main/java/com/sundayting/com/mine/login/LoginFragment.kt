@@ -42,7 +42,7 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
                 }
         }
 
-        // TODO: 改用传统fragment传参？
+        // TODO: 改用传统fragment传参？测试github提交，无意义
         findNavController().currentBackStackEntry!!.let { entry ->
             entry.savedStateHandle.getLiveData<Boolean>(RegisterFragment.REGISTER_SUCCESSFUL)
                 .observe(entry) {
