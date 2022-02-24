@@ -10,6 +10,8 @@ dependencies {
     api project(path: ':network')
     api project(path: ':ui')
 
+    api "com.github.kongzue.DialogX:DialogX:$dialogXVersion"
+
     api("net.gotev:cookie-store-okhttp:$androidCookieStore")
     api("net.gotev:cookie-store:$androidCookieStore")
 

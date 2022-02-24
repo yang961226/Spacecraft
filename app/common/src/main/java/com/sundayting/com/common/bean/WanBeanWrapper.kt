@@ -8,10 +8,10 @@ package com.sundayting.com.common.bean
  * @property errorMsg String 报文中对应errorMsg的部分
  * @constructor
  */
-data class BeanWrapper<T>(
-    val data: T,
-    val errorCode: Int,
-    val errorMsg: String
+data class WanBeanWrapper<T>(
+    val data: T?,
+    val errorCode: Int? = 0,
+    val errorMsg: String? = ""
 ) {
 
     /**

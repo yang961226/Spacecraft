@@ -57,4 +57,6 @@ ext{
     //PermissionX
     permissionXVersion="1.6.1"
 
+    dialogXVersion="0.0.44.beta14"
+
 }

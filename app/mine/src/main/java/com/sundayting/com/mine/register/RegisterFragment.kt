@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
+import com.sundayting.com.common.widget.WaitDialogHelper
 import com.sundayting.com.common.widget.toast
 import com.sundayting.com.mine.databinding.FragmentRegisterBinding
 import com.sundayting.com.ui.BaseBindingFragment
@@ -14,11 +15,15 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
 
     private val viewModel by viewModels<RegisterViewModel>()
+
+    @Inject
+    lateinit var waitDialogHelper: WaitDialogHelper
 
     companion object {
         const val REGISTER_SUCCESSFUL = "LOGIN_SUCCESSFUL"
@@ -56,6 +61,19 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
                 }.collect { message ->
                     toast(message)
                     viewModel.messageShown()
+                }
+        }
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.loading }
+                .distinctUntilChanged()
+                .collect { loading ->
+                    if (loading) {
+                        waitDialogHelper.showLoadingDialog("加载中，请稍后", cancelable = false)
+                    } else {
+                        waitDialogHelper.dismissDialog()
+                    }
                 }
         }
 
