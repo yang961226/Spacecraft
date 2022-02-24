@@ -1,6 +1,5 @@
-package com.sundayting.com.mine
+package com.sundayting.com.mine.login
 
-import com.sundayting.com.common.widget.InstanceMessage
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,27 +12,27 @@ class LoginViewModel @Inject constructor(
 
 ) : BaseViewModel() {
 
-    private val _uiState = MutableStateFlow(MineUiState())
+    private val _uiState = MutableStateFlow(UiState())
     val uiState = _uiState.immutable()
 
-    data class MineUiState(
-        val messages: List<InstanceMessage> = emptyList()
+    data class UiState(
+        val message: String? = null
     )
 
     fun login(
         userName: String,
         password: String,
     ) {
-        _uiState.update {
-            it.copy(messages = listOf(InstanceMessage("功能还没做，别点我")))
+        if (userName.isEmpty() || password.isEmpty()) {
+            _uiState.update {
+                it.copy(message = "请输入账号密码")
+            }
         }
     }
 
-    fun messageShown(id: String) {
+    fun messageShown() {
         _uiState.update { state ->
-            state.copy(messages = state.messages.filter { message ->
-                message.id != id
-            })
+            state.copy(message = null)
         }
     }
 
