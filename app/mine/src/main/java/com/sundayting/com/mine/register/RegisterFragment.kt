@@ -85,7 +85,7 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
                 .collect { successful ->
                     if (successful) {
                         previousSavedStateHandle.set(REGISTER_SUCCESSFUL, true)
-                        findNavController().popBackStack()
+                        findNavController().navigateUp()
                     }
                 }
         }

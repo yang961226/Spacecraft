@@ -9,6 +9,7 @@ import java.io.Serializable
 data class UserBean(
     @PrimaryKey val id: Int = 0,
     @ColumnInfo(name = "email") val email: String? = null,
+    @ColumnInfo(name = "rank") val rank: Long = 0,
     @ColumnInfo(name = "icon") val icon: String? = null,
     @ColumnInfo(name = "nick_name") val nickname: String? = null,
     @ColumnInfo(name = "password") val password: String? = null,
