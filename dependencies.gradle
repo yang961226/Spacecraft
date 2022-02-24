@@ -23,6 +23,8 @@ ext{
     dataStoreVersion = '1.0.0'
     legacySupportVersion = "1.0.0"
 
+    androidCookieStore="1.4.0"
+
     // Design
     materialDesignVersion = "1.4.0"
 
@@ -54,5 +56,7 @@ ext{
 
     //PermissionX
     permissionXVersion="1.6.1"
+
+    dialogXVersion="0.0.44.beta14"
 
 }

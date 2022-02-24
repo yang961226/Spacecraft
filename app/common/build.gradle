@@ -10,10 +10,20 @@ dependencies {
     api project(path: ':network')
     api project(path: ':ui')
 
+    api "com.github.kongzue.DialogX:DialogX:$dialogXVersion"
+
+    api("net.gotev:cookie-store-okhttp:$androidCookieStore")
+    api("net.gotev:cookie-store:$androidCookieStore")
+
+    //Room
+    api("androidx.room:room-runtime:$roomVersion")
+    api("androidx.room:room-ktx:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+
     //Hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
-
 
     //Test
     testImplementation "junit:junit:$jUnitVersion"
