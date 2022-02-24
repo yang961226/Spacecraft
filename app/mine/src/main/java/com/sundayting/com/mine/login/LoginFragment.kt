@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.sundayting.com.common.widget.toast
 import com.sundayting.com.mine.databinding.FragmentLoginBinding
+import com.sundayting.com.mine.register.RegisterFragment
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +32,7 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
             }
         }
 
+        //监听通知
         launchAndRepeatWithViewLifecycle {
             viewModel.uiState
                 .mapNotNull { it.message }
@@ -40,6 +42,17 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
                 }
         }
 
+        // TODO: 改用传统fragment传参？
+        findNavController().currentBackStackEntry!!.let { entry ->
+            entry.savedStateHandle.getLiveData<Boolean>(RegisterFragment.REGISTER_SUCCESSFUL)
+                .observe(entry) {
+                    if (it) {
+                        toast("注册成功，请登录")
+                        //清空残留数据，避免倒灌
+                        entry.savedStateHandle.set(RegisterFragment.REGISTER_SUCCESSFUL, false)
+                    }
+                }
+        }
     }
 
 }

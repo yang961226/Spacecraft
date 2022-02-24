@@ -113,7 +113,7 @@
         android:background="@drawable/button_ripple"
         android:backgroundTint="@color/secondaryColor"
         android:fontFamily="@font/gilroy_bold"
-        android:text="注册（模拟数据）"
+        android:text="注册（模拟注册）"
         android:textSize="@dimen/textLargeSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -20,8 +20,6 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
 
     companion object {
         const val REGISTER_SUCCESSFUL = "LOGIN_SUCCESSFUL"
-        const val REGISTER_USERNAME = "REGISTER_USERNAME"
-        const val REGISTER_PASSWORD = "REGISTER_PASSWORD"
     }
 
     private lateinit var previousSavedStateHandle: SavedStateHandle
@@ -33,46 +31,42 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
 
         binding.run {
             btnRegister.setOnClickListener {
-
+                viewModel.register(
+                    etUsername.text.toString(),
+                    etPassword.text.toString(),
+                    etRePassword.text.toString()
+                )
+            }
+            btnRegisterTest.setOnClickListener {
+                viewModel.registerTest(
+                    etUsername.text.toString(),
+                    etPassword.text.toString(),
+                    etRePassword.text.toString()
+                )
             }
         }
 
+        //监听通知
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState.run {
-                mapNotNull {
+            viewModel.uiState
+                .mapNotNull {
                     it.message
                 }.collect { message ->
                     toast(message)
                 }
+        }
 
-                map {
-                    it.registerSuccess
-                }.distinctUntilChanged()
-                    .collect { successful ->
-                        if (successful) {
-                            previousSavedStateHandle.set(REGISTER_SUCCESSFUL, true)
-                            previousSavedStateHandle.set(
-                                REGISTER_USERNAME,
-                                binding.etUsername.text.toString()
-                            )
-                            previousSavedStateHandle.set(
-                                REGISTER_PASSWORD,
-                                binding.etPassword.text.toString()
-                            )
-                        }
+        //监听注册成功
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.registerSuccess }
+                .distinctUntilChanged()
+                .collect { successful ->
+                    if (successful) {
+                        previousSavedStateHandle.set(REGISTER_SUCCESSFUL, true)
+                        findNavController().popBackStack()
                     }
-//                    .collect { userName->
-//                        userName.let {
-//                            previousSavedStateHandle.set(REGISTER_SUCCESSFUL,true)
-//                            previousSavedStateHandle.set(REGISTER_USERNAME,this)
-//                        }
-//                        if(successful){
-//
-//                            findNavController().popBackStack()
-//                        }
-//                    }
-            }
+                }
         }
     }
-
 }
