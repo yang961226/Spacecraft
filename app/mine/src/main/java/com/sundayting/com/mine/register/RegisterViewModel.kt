@@ -1,15 +1,19 @@
 package com.sundayting.com.mine.register
 
+import androidx.lifecycle.viewModelScope
 import com.sundayting.com.core.ext.immutable
+import com.sundayting.com.network.onFailure
+import com.sundayting.com.network.onSuccess
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-
+    private val registerRepository: RegisterRepository
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -33,8 +37,18 @@ class RegisterViewModel @Inject constructor(
             }
             return
         }
-        _uiState.update { uiState ->
-            uiState.copy(message = "功能未制作")
+        viewModelScope.launch {
+            registerRepository.register(username, password, rePassword)
+                .onSuccess {
+                    _uiState.update { state ->
+                        state.copy(registerSuccess = true)
+                    }
+                }
+                .onFailure { failureReason ->
+                    _uiState.update { uiState ->
+                        uiState.copy(message = "$failureReason")
+                    }
+                }
         }
     }
 

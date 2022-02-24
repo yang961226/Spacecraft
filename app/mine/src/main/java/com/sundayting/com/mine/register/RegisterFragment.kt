@@ -9,11 +9,13 @@ import com.sundayting.com.common.widget.toast
 import com.sundayting.com.mine.databinding.FragmentRegisterBinding
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 
+@AndroidEntryPoint
 class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
 
     private val viewModel by viewModels<RegisterViewModel>()
@@ -53,6 +55,7 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
                     it.message
                 }.collect { message ->
                     toast(message)
+                    viewModel.messageShown()
                 }
         }
 
