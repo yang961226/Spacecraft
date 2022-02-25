@@ -1,5 +1,6 @@
 package com.sundayting.com.common
 
+import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.common.bean.BannerBean
 import com.sundayting.com.common.bean.UserBean
 import com.sundayting.com.common.bean.WanBeanWrapper
@@ -35,5 +36,13 @@ interface WanAppService {
     suspend fun banner(
         //无参数
     ): ApiResponse<WanBeanWrapper<MutableList<BannerBean>>>
+
+    /**
+     * 获取首页文章数据
+     */
+    @GET("/article/list/{page}/json")
+    suspend fun article(
+        @Path("page") page: Int
+    ): ApiResponse<WanBeanWrapper<ArticleListBean>>
 
 }
