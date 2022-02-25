@@ -1,4 +1,4 @@
-package com.sundayting.com.common.widget
+package com.sundayting.com.common.ext
 
 import android.widget.Toast
 import com.sundayting.com.ui.BaseActivity

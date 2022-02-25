@@ -1,12 +1,10 @@
 package com.sundayting.com.common
 
+import com.sundayting.com.common.bean.BannerBean
 import com.sundayting.com.common.bean.UserBean
 import com.sundayting.com.common.bean.WanBeanWrapper
 import com.sundayting.com.network.ApiResponse
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 interface WanAppService {
 
@@ -29,5 +27,13 @@ interface WanAppService {
         @Field("username") username: String,
         @Field("password") password: String
     ): ApiResponse<WanBeanWrapper<UserBean>>
+
+    /**
+     * 首页Banner
+     */
+    @GET("/banner/json")
+    suspend fun banner(
+        //无参数
+    ): ApiResponse<WanBeanWrapper<MutableList<BannerBean>>>
 
 }

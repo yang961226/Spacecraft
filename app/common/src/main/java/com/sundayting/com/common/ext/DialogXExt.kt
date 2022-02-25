@@ -1,4 +1,4 @@
-package com.sundayting.com.common.di
+package com.sundayting.com.common.ext
 
 import com.kongzue.dialogx.DialogX
 import com.kongzue.dialogx.dialogs.TipDialog
