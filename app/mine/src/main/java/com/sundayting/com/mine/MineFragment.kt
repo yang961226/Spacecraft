@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.sundayting.com.common.widget.toast
+import com.sundayting.com.common.ext.toast
 import com.sundayting.com.mine.databinding.FragmentMineBinding
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle

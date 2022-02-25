@@ -57,6 +57,10 @@ ext{
     //PermissionX
     permissionXVersion="1.6.1"
 
+    //DialogX
     dialogXVersion="0.0.44.beta14"
+
+    //Glide
+    glideVersion="4.13.0"
 
 }
