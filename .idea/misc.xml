@@ -4,7 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/button_ripple.xml" value="0.1" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/progress_red.xml" value="0.1" />
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/ripple_bg_primary_light.xml" value="0.1" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/ripple_circle_bg.xml" value="0.1" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_add.xml" value="0.1" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_back.xml" value="0.1575" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_clear.xml" value="0.206" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_detail.xml" value="0.206" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/layout/fragment_web.xml" value="0.176" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16.xml" value="0.2815" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16_theme_2.xml" value="0.2135" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/svg_add.xml" value="0.1" />

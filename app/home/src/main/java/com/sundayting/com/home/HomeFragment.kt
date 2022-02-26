@@ -1,11 +1,15 @@
 package com.sundayting.com.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sundayting.com.common.ext.toast
+import com.sundayting.com.common.web.WebActivity
+import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
 import com.sundayting.com.home.article.ArticleAdapter
 import com.sundayting.com.home.databinding.FragmentHomeBinding
@@ -36,7 +40,22 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
                 it.onClickArticleItem = { clickedArticleItem, clickAction ->
                     when (clickAction) {
-                        ArticleAdapter.ClickAction.NORMAL_CLICK -> toast(clickedArticleItem.title)
+                        ArticleAdapter.ClickAction.NORMAL_CLICK -> {
+                            startActivity(
+                                Intent(
+                                    requireActivity(),
+                                    WebActivity::class.java
+                                ).also { intent ->
+                                    intent.putExtras(
+                                        bundleOf(
+                                            "webViewBean" to WebViewBean(
+                                                loadUrl = clickedArticleItem.link,
+                                                title = clickedArticleItem.title
+                                            )
+                                        )
+                                    )
+                                })
+                        }
                         ArticleAdapter.ClickAction.COLLECT_CLICK -> toast("收藏:${clickedArticleItem.title}")
                     }
 

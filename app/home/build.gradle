@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
-apply from:"../../basic.gradle"
+apply from: "../../basic.gradle"
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'androidx.navigation.safeargs'
 
 dependencies {
     implementation project(path: ':app:common')
