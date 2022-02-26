@@ -7,7 +7,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.sundayting.com.common.ext.toast
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
@@ -19,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -56,7 +54,9 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                                     )
                                 })
                         }
-                        ArticleAdapter.ClickAction.COLLECT_CLICK -> toast("收藏:${clickedArticleItem.title}")
+                        ArticleAdapter.ClickAction.COLLECT_CLICK -> {
+
+                        }
                     }
 
                 }
@@ -78,16 +78,6 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                             .transition(DrawableTransitionOptions.withCrossFade())
                             .into(binding.ivBanner)
                     }
-
-                }
-        }
-
-        //监听文章
-        launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
-                .mapNotNull { it.articleList }
-                .distinctUntilChanged()
-                .collect { articleListBean ->
 
                 }
         }

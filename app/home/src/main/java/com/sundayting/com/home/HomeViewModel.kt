@@ -3,6 +3,7 @@ package com.sundayting.com.home
 import androidx.lifecycle.viewModelScope
 import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.common.bean.BannerBean
+import com.sundayting.com.common.widget.Tip
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.home.article.ArticleRepository
 import com.sundayting.com.home.banner.BannerRepository
@@ -27,13 +28,40 @@ class HomeViewModel @Inject constructor(
     data class UiState(
         val banner: MutableList<BannerBean> = arrayListOf(),
         val articleList: ArticleListBean? = null,
-        val message: String? = null
+        val message: String? = null,
+        val tipList: List<Tip> = mutableListOf()
     )
 
     init {
         refreshBanner()
         // TODO: 临时，后续会有改动
         refreshArticle(0)
+    }
+
+//    fun collectArticle(id: Int) {
+//        viewModelScope.launch {
+//            articleRepository.getArticle(id)
+//                .onSuccess {
+//                    _uiState.update { uiState ->
+//                        uiState.copy(articleList = uiState.articleList?.also {
+//
+////                            it.datas.forEach { articleBean ->
+////                                articleBean=articleBean.copy()
+////                                if(articleBean.id.toInt()==id){
+////                                    articleBean.collect=true
+////                                    return@forEach
+////                                }
+////                            }
+//                        })
+//                    }
+//                }
+//        }
+//    }
+
+    fun tipShown(tipId: String) {
+        _uiState.update { uiState ->
+            uiState.copy(tipList = uiState.tipList.filterNot { it.uuid == tipId })
+        }
     }
 
     private fun refreshBanner() {

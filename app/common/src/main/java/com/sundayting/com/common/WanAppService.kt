@@ -45,4 +45,16 @@ interface WanAppService {
         @Path("page") page: Int
     ): ApiResponse<WanBeanWrapper<ArticleListBean>>
 
+    /**
+     * 收藏文章
+     */
+    @POST("/lg/collect/{id}/json")
+    suspend fun collect(@Path("id") id: Int): ApiResponse<WanBeanWrapper<Any>>
+
+    /**
+     * 取消收藏文章
+     */
+    @POST("/lg/uncollect_originId/{id}/json")
+    suspend fun unCollect(@Path("id") id: Int): ApiResponse<WanBeanWrapper<Any>>
+
 }
