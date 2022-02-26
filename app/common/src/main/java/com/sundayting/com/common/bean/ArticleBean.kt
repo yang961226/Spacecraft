@@ -1,50 +1,39 @@
 package com.sundayting.com.common.bean
 
 data class ArticleBean(
-    val id: Int = 0,
-
-    /**
-     * 作者
-     */
-    val author: String? = null,
-
-    /**
-     * 是否收藏
-     */
+    //这里的是接口属性
+    val apkLink: String = "",
+    val audit: Long = 0,
+    val author: String = "",
+    val canEdit: Boolean = false,
+    val chapterId: Long = 0,
+    val chapterName: String = "",
     val collect: Boolean = false,
+    val courseId: Long = 0,
+    val desc: String = "",
+    val descMd: String = "",
+    val envelopePic: String = "",
+    val fresh: Boolean = false,
+    val id: Long = 0,
+    val link: String = "",
+    val niceDate: String = "",
+    val niceShareDate: String = "",
+    val origin: String = "",
+    val prefix: String = "",
+    val projectLink: String = "",
+    val publishTime: Long = 0,
+    val selfVisible: Long = 0,
+    val shareDate: Long = 0,
+    val shareUser: String = "",
+    val superChapterId: Long = 0,
+    val superChapterName: String = "",
+    val title: String = "",
+    val type: Long = 0,
+    val userId: Long = 0,
+    val visible: Long = 0,
+    val zan: Long = 0,
+//    val tags: List<*>? = null,
 
-    /**
-     * 描述信息
-     */
-    val desc: String? = null,
-
-    /**
-     * 图片类型，有和无
-     */
-    val picUrl: String? = null,
-
-    /**
-     * 链接
-     */
-    val link: String? = null,
-
-    /**
-     * 日期
-     */
-    val niceDate: String? = null,
-
-    /**
-     * 标题
-     */
-    val title: String? = null,
-
-    /**
-     * 文章标签
-     */
-    val superChapterName: String? = null,
-
-    /**
-     * 1.置顶
-     */
-    val topTitle: String? = null
+    //这里的是自定义属性
+    val isTop: Boolean = false
 )
