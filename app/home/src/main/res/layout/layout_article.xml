@@ -1,60 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
+    android:layout_margin="5dp"
+    android:background="#424242"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="#fafafa"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/tvTag"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#EF3939"
-        tools:text="置顶 " />
+        android:padding="15dp">
 
-    <TextView
-        android:id="@+id/tvAuthor"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/tvTag"
-        android:textColor="#999999"
-        tools:text="鸿洋" />
+        <TextView
+            android:id="@+id/tv_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="置顶 "
+            android:textColor="#EF3939" />
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:textColor="#999999"
-        tools:text="2020-03-08" />
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/tv_top"
+            android:textColor="#999999"
+            tools:text="鸿洋" />
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_date"
-        android:layout_marginTop="10dp"
-        android:maxLines="3"
-        android:textColor="@color/black"
-        tools:text="分布式协调工具之zookeeper使用篇-Zookeeper系统核心模型" />
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textColor="#999999"
+            tools:text="2020-03-08" />
 
-    <TextView
-        android:id="@+id/tv_chapter_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_marginTop="10dp"
-        android:textColor="#999999"
-        tools:text="开发环境" />
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_date"
+            android:layout_marginTop="10dp"
+            android:maxLines="3"
+            android:textColor="@color/black"
+            tools:text="分布式协调工具之zookeeper使用篇-Zookeeper系统核心模型" />
 
-    <ImageView
-        android:id="@+id/iv_collect"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignTop="@+id/tv_chapter_name"
-        android:layout_alignParentRight="true"
-        android:padding="5dp" />
+        <TextView
+            android:id="@+id/tv_chapter_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTitle"
+            android:layout_marginTop="10dp"
+            android:textColor="#999999"
+            tools:text="开发环境" />
+
+        <ImageView
+            android:id="@+id/iv_collect"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignTop="@+id/tv_chapter_name"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/un_collect" />
+    </RelativeLayout>
 
 
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

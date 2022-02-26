@@ -3,9 +3,9 @@ package com.sundayting.com.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.sundayting.com.common.ext.toast
 import com.sundayting.com.common.widget.GlidePro
 import com.sundayting.com.home.article.ArticleAdapter
 import com.sundayting.com.home.databinding.FragmentHomeBinding
@@ -29,13 +29,18 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         collectUiState()
         binding.rvArticle.run {
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-
             adapter = articleAdapter.also {
                 //解决recyclerView异步加载数据时的刷新问题
                 //http://www.zyiz.net/tech/detail-134593.html
                 it.stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                it.onClickArticleItem = { clickedArticleItem, clickAction ->
+                    when (clickAction) {
+                        ArticleAdapter.ClickAction.NORMAL_CLICK -> toast(clickedArticleItem.title)
+                        ArticleAdapter.ClickAction.COLLECT_CLICK -> toast("收藏:${clickedArticleItem.title}")
+                    }
+
+                }
             }
         }
     }

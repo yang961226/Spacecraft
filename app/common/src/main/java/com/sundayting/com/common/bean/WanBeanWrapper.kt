@@ -14,12 +14,24 @@ data class WanBeanWrapper<T>(
     val errorMsg: String? = ""
 ) {
 
+    companion object {
+        const val LOGIN_ERROR_CODE = -1001
+    }
+
     /**
      * 请求是否成功
      * @return Boolean true:成功
      */
     fun isSuccessful(): Boolean {
         return errorCode == 0
+    }
+
+    /**
+     * 登陆失败
+     * @return Boolean true:登陆失败
+     */
+    fun isLoginError(): Boolean {
+        return errorCode == LOGIN_ERROR_CODE
     }
 
 }
