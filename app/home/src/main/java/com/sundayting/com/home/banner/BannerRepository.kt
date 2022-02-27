@@ -9,7 +9,7 @@ class BannerRepository @Inject constructor(
     private val bannerRemoteResource: BannerRemoteResource
 ) {
 
-    suspend fun getBanner(): MutableList<BannerBean>? {
+    suspend fun getBanner(): List<BannerBean>? {
         bannerRemoteResource.getBanner().onSuccess {
             if (it.responseBody.isSuccessful()) {
                 return it.responseBody.data

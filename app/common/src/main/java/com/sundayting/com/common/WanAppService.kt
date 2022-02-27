@@ -12,6 +12,7 @@ interface WanAppService {
     /**
      * 注册
      */
+    @FormUrlEncoded
     @POST("/user/register")
     suspend fun register(
         @Query("username") username: String,
@@ -28,6 +29,9 @@ interface WanAppService {
         @Field("username") username: String,
         @Field("password") password: String
     ): ApiResponse<WanBeanWrapper<UserBean>>
+
+    @GET("/user/logout/json")
+    suspend fun logout(): ApiResponse<WanBeanWrapper<Any>>
 
     /**
      * 首页Banner

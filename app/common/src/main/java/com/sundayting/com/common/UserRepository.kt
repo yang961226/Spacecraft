@@ -1,8 +1,6 @@
-package com.sundayting.com.mine
+package com.sundayting.com.common
 
 import com.sundayting.com.common.bean.UserBean
-import com.sundayting.com.mine.login.UserLocalResource
-import com.sundayting.com.mine.login.UserRemoteResource
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
@@ -12,6 +10,8 @@ class UserRepository @Inject constructor(
 
     suspend fun login(username: String, password: String) =
         userRemoteResource.login(username, password)
+
+    suspend fun logout() = userRemoteResource.logout()
 
     suspend fun getLocalUserBean(): UserBean? {
         return userLocalResource.getLocalUserBean()

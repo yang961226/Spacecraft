@@ -1,7 +1,6 @@
 package com.sundayting.com.common.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
@@ -16,7 +15,7 @@ interface UserDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertUser(userBean: UserBean)
 
-    @Delete
-    suspend fun delete(userBean: UserBean)
+    @Query("DELETE FROM userBean")
+    suspend fun clearUser()
 
 }

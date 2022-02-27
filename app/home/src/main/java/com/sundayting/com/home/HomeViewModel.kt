@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.sundayting.com.common.bean.ArticleBean
 import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.common.bean.BannerBean
+import com.sundayting.com.common.dao.WanDatabase
 import com.sundayting.com.common.widget.Tip
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.home.article.ArticleRepository
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    private val wanDatabase: WanDatabase,
     private val bannerRepository: BannerRepository,
     private val articleRepository: ArticleRepository,
 ) : BaseViewModel() {
@@ -37,12 +39,17 @@ class HomeViewModel @Inject constructor(
 
     init {
         refreshBanner()
-        // TODO: 临时，后续会有改动
-        refreshArticle(0)
+        clearAndRefreshArticle()
     }
 
     fun collectArticle(id: Long) {
         viewModelScope.launch {
+            if (wanDatabase.userDao().getUserLocal() == null) {
+                _uiState.update { uiState ->
+                    uiState.copy(tipList = uiState.tipList + Tip("请先登录"))
+                }
+                return@launch
+            }
             _uiState.update { uiState ->
                 uiState.copy(loading = true)
             }
@@ -93,6 +100,12 @@ class HomeViewModel @Inject constructor(
 
     fun unCollectArticle(id: Long) {
         viewModelScope.launch {
+            if (wanDatabase.userDao().getUserLocal() == null) {
+                _uiState.update { uiState ->
+                    uiState.copy(tipList = uiState.tipList + Tip("请先登录"))
+                }
+                return@launch
+            }
             _uiState.update { uiState ->
                 uiState.copy(loading = true)
             }
@@ -161,14 +174,26 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun refreshArticle(page: Int) {
+    fun clearAndRefreshArticle() {
+        refreshArticle(0, true)
+    }
+
+    private fun refreshArticle(page: Int, clear: Boolean = false) {
+        if (clear) {
+            _uiState.update { uiState ->
+                uiState.copy(articleList = null)
+            }
+        }
         viewModelScope.launch {
             // TODO: 先固定实现一个不翻页的
             articleRepository.getArticle(page)
                 .onSuccess { response ->
                     response.responseBody.data?.let { articleList ->
                         _uiState.update { uiState ->
-                            uiState.copy(articleList = articleList)
+                            uiState.copy(articleList = articleList.also {
+                                //补上之前的数据
+                                it.datas + uiState.articleList?.datas
+                            })
                         }
                     }
                 }
