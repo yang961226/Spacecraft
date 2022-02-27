@@ -6,7 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.fragment.findNavController
 import com.sundayting.com.common.ext.toast
-import com.sundayting.com.common.widget.WaitDialogHelper
+import com.sundayting.com.common.widget.NotificationHelper
 import com.sundayting.com.mine.databinding.FragmentRegisterBinding
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
@@ -23,7 +23,7 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
     private val viewModel by viewModels<RegisterViewModel>()
 
     @Inject
-    lateinit var waitDialogHelper: WaitDialogHelper
+    lateinit var notificationHelper: NotificationHelper
 
     companion object {
         const val REGISTER_SUCCESSFUL = "LOGIN_SUCCESSFUL"
@@ -70,9 +70,9 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
                 .distinctUntilChanged()
                 .collect { loading ->
                     if (loading) {
-                        waitDialogHelper.showLoadingDialog("加载中，请稍后", cancelable = false)
+                        notificationHelper.showLoadingDialog("加载中，请稍后", cancelable = false)
                     } else {
-                        waitDialogHelper.dismissDialog()
+                        notificationHelper.dismissDialog()
                     }
                 }
         }

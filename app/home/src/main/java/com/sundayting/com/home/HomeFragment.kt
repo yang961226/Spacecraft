@@ -10,6 +10,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
+import com.sundayting.com.common.widget.NotificationHelper
 import com.sundayting.com.home.article.ArticleAdapter
 import com.sundayting.com.home.databinding.FragmentHomeBinding
 import com.sundayting.com.ui.BaseBindingFragment
@@ -24,6 +25,9 @@ import javax.inject.Inject
 class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
 
     @Inject
+    lateinit var notificationHelper: NotificationHelper
+
+    @Inject
     lateinit var articleAdapter: ArticleAdapter
     private val viewModel by viewModels<HomeViewModel>()
 
@@ -36,8 +40,11 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                 //http://www.zyiz.net/tech/detail-134593.html
                 it.stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
+                //设置点击item的事件
                 it.onClickArticleItem = { clickedArticleItem, clickAction ->
                     when (clickAction) {
+                        //当点击item时
                         ArticleAdapter.ClickAction.NORMAL_CLICK -> {
                             startActivity(
                                 Intent(
@@ -54,8 +61,13 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                                     )
                                 })
                         }
+                        //当点击收藏按钮时
                         ArticleAdapter.ClickAction.COLLECT_CLICK -> {
-
+                            if (clickedArticleItem.collect) {
+                                viewModel.unCollectArticle(clickedArticleItem.id)
+                            } else {
+                                viewModel.collectArticle(clickedArticleItem.id)
+                            }
                         }
                     }
 
@@ -65,6 +77,34 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
     }
 
     private fun collectUiState() {
+        //监听收藏进度
+        // TODO: 发现一个问题，loading不止有状态，还应该要有loading的显示字段，后续修改为传回一个对象，包含两者 
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.loading }
+                .distinctUntilChanged()
+                .collect { loading ->
+                    if (loading) {
+                        notificationHelper.showLoadingDialog("请稍后")
+                    } else {
+                        notificationHelper.dismissDialog()
+                    }
+                }
+        }
+
+        //监听tip
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.tipList }
+                .distinctUntilChanged()
+                .collect { tipList ->
+                    tipList.firstOrNull()?.let { tip ->
+                        notificationHelper.showTip(tip.content)
+                        viewModel.tipShown(tip.uuid)
+                    }
+                }
+        }
+
         //监听Banner
         launchAndRepeatWithViewLifecycle {
             viewModel.uiState

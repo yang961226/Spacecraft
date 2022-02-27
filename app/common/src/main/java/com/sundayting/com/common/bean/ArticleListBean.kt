@@ -8,5 +8,5 @@ data class ArticleListBean(
     val size: Long = 0,
     val total: Long = 0,
     // TODO: 起别名失效，准备探究原因 
-    val datas: MutableList<ArticleBean> = arrayListOf()
+    val datas: List<ArticleBean> = emptyList()
 )

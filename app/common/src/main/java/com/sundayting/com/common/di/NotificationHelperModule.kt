@@ -1,7 +1,7 @@
 package com.sundayting.com.common.di
 
-import com.sundayting.com.common.widget.WaitDialogHelper
-import com.sundayting.com.common.widget.WaitDialogHelperImpl
+import com.sundayting.com.common.widget.NotificationHelper
+import com.sundayting.com.common.widget.NotificationHelperImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -10,10 +10,10 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-abstract class WaitDialogHelperModule {
+abstract class NotificationHelperModule {
 
     @Singleton
     @Binds
-    abstract fun bindsWaitDialogHelper(impl: WaitDialogHelperImpl): WaitDialogHelper
+    abstract fun bindsNotificationHelper(impl: NotificationHelperImpl): NotificationHelper
 
 }

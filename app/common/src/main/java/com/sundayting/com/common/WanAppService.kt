@@ -49,12 +49,12 @@ interface WanAppService {
      * 收藏文章
      */
     @POST("/lg/collect/{id}/json")
-    suspend fun collect(@Path("id") id: Int): ApiResponse<WanBeanWrapper<Any>>
+    suspend fun collect(@Path("id") id: Long): ApiResponse<WanBeanWrapper<Any>>
 
     /**
      * 取消收藏文章
      */
     @POST("/lg/uncollect_originId/{id}/json")
-    suspend fun unCollect(@Path("id") id: Int): ApiResponse<WanBeanWrapper<Any>>
+    suspend fun unCollect(@Path("id") id: Long): ApiResponse<WanBeanWrapper<Any>>
 
 }

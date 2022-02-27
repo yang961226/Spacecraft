@@ -1,11 +1,17 @@
 package com.sundayting.com.common.widget
 
+import com.kongzue.dialogx.dialogs.PopTip
 import com.kongzue.dialogx.dialogs.TipDialog
 import com.kongzue.dialogx.dialogs.WaitDialog
 import com.kongzue.dialogx.interfaces.OnBackPressedListener
 import javax.inject.Inject
 
-class WaitDialogHelperImpl @Inject constructor() : WaitDialogHelper {
+class NotificationHelperImpl @Inject constructor() : NotificationHelper {
+
+    override fun showTip(tip: String) {
+        PopTip.show(tip)
+    }
+
     override fun showPositiveDialog(message: String) {
         TipDialog.show(message, WaitDialog.TYPE.SUCCESS)
     }

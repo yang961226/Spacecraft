@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.sundayting.com.common.ext.toast
-import com.sundayting.com.common.widget.WaitDialogHelper
+import com.sundayting.com.common.widget.NotificationHelper
 import com.sundayting.com.mine.UserViewModel
 import com.sundayting.com.mine.databinding.FragmentLoginBinding
 import com.sundayting.com.mine.register.RegisterFragment
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
 
     @Inject
-    lateinit var dialogHelper: WaitDialogHelper
+    lateinit var dialogHelper: NotificationHelper
 
     private val viewModel by activityViewModels<UserViewModel>()
 
