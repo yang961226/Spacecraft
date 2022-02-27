@@ -26,6 +26,16 @@ class UserViewModel @Inject constructor(
         val userBean: UserBean? = null
     )
 
+    init {
+        viewModelScope.launch {
+            userRepository.getLocalUserBean()?.let { userBeanCached ->
+                _uiState.update { uiState ->
+                    uiState.copy(userBean = userBeanCached)
+                }
+            }
+        }
+    }
+
     fun login(
         username: String,
         password: String,
@@ -43,8 +53,11 @@ class UserViewModel @Inject constructor(
             userRepository.login(username, password)
                 .onSuccess { apiResponse ->
                     if (apiResponse.responseBody.isSuccessful()) {
-                        _uiState.update { uiState ->
-                            uiState.copy(message = "登陆成功", userBean = apiResponse.responseBody.data)
+                        apiResponse.responseBody.data?.let { userBean ->
+                            userRepository.cacheUserBean(userBean)
+                            _uiState.update { uiState ->
+                                uiState.copy(message = "登陆成功", userBean = userBean)
+                            }
                         }
                     } else {
                         _uiState.update { uiState ->

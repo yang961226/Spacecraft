@@ -9,6 +9,7 @@ import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.home.article.ArticleRepository
 import com.sundayting.com.home.banner.BannerRepository
 import com.sundayting.com.network.onFailure
+import com.sundayting.com.network.onFinish
 import com.sundayting.com.network.onSuccess
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,30 +48,42 @@ class HomeViewModel @Inject constructor(
             }
             articleRepository.collectArticle(id)
                 .onSuccess {
-                    _uiState.update { uiState ->
-                        uiState.copy(
-                            articleList = uiState.articleList?.copy(
-                                datas = uiState.articleList.datas.let { articleBeanList ->
-                                    val newArticleBeanList = mutableListOf<ArticleBean>()
-                                    for (articleBean in articleBeanList) {
-                                        if (articleBean.id == id) {
-                                            newArticleBeanList.add(articleBean.copy(collect = true))
-                                        } else {
-                                            newArticleBeanList.add(articleBean)
+                    if (it.responseBody.isSuccessful()) {
+                        _uiState.update { uiState ->
+                            uiState.copy(
+                                articleList = uiState.articleList?.copy(
+                                    datas = uiState.articleList.datas.let { articleBeanList ->
+                                        val newArticleBeanList = mutableListOf<ArticleBean>()
+                                        for (articleBean in articleBeanList) {
+                                            if (articleBean.id == id) {
+                                                newArticleBeanList.add(articleBean.copy(collect = true))
+                                            } else {
+                                                newArticleBeanList.add(articleBean)
+                                            }
                                         }
+                                        newArticleBeanList
                                     }
-                                    newArticleBeanList
-                                }
-                            ),
-                            tipList = uiState.tipList + Tip("收藏成功"),
-                            loading = false
-                        )
+                                ),
+                                tipList = uiState.tipList + Tip("收藏成功")
+                            )
+                        }
+                    } else {
+                        _uiState.update { uiState ->
+                            uiState.copy(tipList = uiState.tipList + Tip("${it.responseBody.errorMsg}"))
+                        }
                     }
+
                 }
                 .onFailure {
                     _uiState.update { uiState ->
                         uiState.copy(
-                            tipList = uiState.tipList + Tip("收藏失败"),
+                            tipList = uiState.tipList + Tip("收藏失败")
+                        )
+                    }
+                }
+                .onFinish {
+                    _uiState.update { uiState ->
+                        uiState.copy(
                             loading = false
                         )
                     }
@@ -85,30 +98,42 @@ class HomeViewModel @Inject constructor(
             }
             articleRepository.unCollectArticle(id)
                 .onSuccess {
-                    _uiState.update { uiState ->
-                        uiState.copy(
-                            articleList = uiState.articleList?.copy(
-                                datas = uiState.articleList.datas.let { articleBeanList ->
-                                    val newArticleBeanList = mutableListOf<ArticleBean>()
-                                    for (articleBean in articleBeanList) {
-                                        if (articleBean.id == id) {
-                                            newArticleBeanList.add(articleBean.copy(collect = false))
-                                        } else {
-                                            newArticleBeanList.add(articleBean)
+                    if (it.responseBody.isSuccessful()) {
+                        _uiState.update { uiState ->
+                            uiState.copy(
+                                articleList = uiState.articleList?.copy(
+                                    datas = uiState.articleList.datas.let { articleBeanList ->
+                                        val newArticleBeanList = mutableListOf<ArticleBean>()
+                                        for (articleBean in articleBeanList) {
+                                            if (articleBean.id == id) {
+                                                newArticleBeanList.add(articleBean.copy(collect = false))
+                                            } else {
+                                                newArticleBeanList.add(articleBean)
+                                            }
                                         }
+                                        newArticleBeanList
                                     }
-                                    newArticleBeanList
-                                }
-                            ),
-                            tipList = uiState.tipList + Tip("取消收藏成功"),
-                            loading = false
-                        )
+                                ),
+                                tipList = uiState.tipList + Tip("取消收藏成功")
+                            )
+                        }
+                    } else {
+                        _uiState.update { uiState ->
+                            uiState.copy(tipList = uiState.tipList + Tip("${it.responseBody.errorMsg}"))
+                        }
                     }
+
                 }
                 .onFailure {
                     _uiState.update { uiState ->
                         uiState.copy(
-                            tipList = uiState.tipList + Tip("取消收藏失败"),
+                            tipList = uiState.tipList + Tip("取消收藏失败")
+                        )
+                    }
+                }
+                .onFinish {
+                    _uiState.update { uiState ->
+                        uiState.copy(
                             loading = false
                         )
                     }

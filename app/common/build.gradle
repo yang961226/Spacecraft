@@ -10,6 +10,14 @@ dependencies {
     api project(path: ':network')
     api project(path: ':ui')
 
+    //room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$roomVersion")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$roomVersion")
+
     api "com.github.kongzue.DialogX:DialogX:$dialogXVersion"
 
     api("net.gotev:cookie-store-okhttp:$androidCookieStore")
