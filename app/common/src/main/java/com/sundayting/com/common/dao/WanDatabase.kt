@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.sundayting.com.common.bean.UserBean
 
-@Database(entities = [UserBean::class], version = 1)
+@Database(entities = [UserBean::class], version = 1, exportSchema = false)
 abstract class WanDatabase : RoomDatabase() {
 
     abstract fun userDao(): UserDao

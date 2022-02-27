@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.sundayting.com.common.UserViewModel
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
@@ -30,6 +32,7 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
     @Inject
     lateinit var articleAdapter: ArticleAdapter
     private val viewModel by viewModels<HomeViewModel>()
+    private val userViewModel by activityViewModels<UserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -101,6 +104,19 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                     tipList.firstOrNull()?.let { tip ->
                         notificationHelper.showTip(tip.content)
                         viewModel.tipShown(tip.uuid)
+                    }
+                }
+        }
+
+        //监听activity的UserBean，因为要监控是否用户退出了登陆，如果退出了登陆，就重新刷新列表数据（因为涉及收藏）
+        launchAndRepeatWithViewLifecycle {
+            userViewModel.uiState
+                .map { it.userBean }
+                .distinctUntilChanged()
+                .collect { userBean ->
+                    //监听到了用户退出登陆，重新刷新一下文章列表
+                    if (userBean == null) {
+                        viewModel.refreshBanner(true)
                     }
                 }
         }

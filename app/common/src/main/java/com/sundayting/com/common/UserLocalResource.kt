@@ -1,4 +1,4 @@
-package com.sundayting.com.mine.login
+package com.sundayting.com.common
 
 import com.sundayting.com.common.bean.UserBean
 import com.sundayting.com.common.dao.WanDatabase

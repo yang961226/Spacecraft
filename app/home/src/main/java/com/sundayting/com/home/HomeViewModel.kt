@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
     )
 
     init {
-        refreshBanner()
+        refreshBanner(false)
         // TODO: 临时，后续会有改动
         refreshArticle(0)
     }
@@ -147,8 +147,13 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun refreshBanner() {
+    fun refreshBanner(clear: Boolean) {
         viewModelScope.launch {
+            if (clear) {
+                _uiState.update { uiState ->
+                    uiState.copy(banner = listOf())
+                }
+            }
             _uiState.update { uiState ->
                 bannerRepository.getBanner().let {
                     if (it == null) {

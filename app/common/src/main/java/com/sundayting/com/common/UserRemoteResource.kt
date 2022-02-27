@@ -1,6 +1,5 @@
-package com.sundayting.com.mine.login
+package com.sundayting.com.common
 
-import com.sundayting.com.common.WanAppService
 import javax.inject.Inject
 
 class UserRemoteResource @Inject constructor(
@@ -8,5 +7,7 @@ class UserRemoteResource @Inject constructor(
 ) {
 
     suspend fun login(username: String, password: String) = wanAppService.login(username, password)
+
+    suspend fun logout() = wanAppService.logout()
 
 }

@@ -1,9 +1,12 @@
-package com.sundayting.com.mine
+package com.sundayting.com.common
 
 import androidx.lifecycle.viewModelScope
 import com.sundayting.com.common.bean.UserBean
+import com.sundayting.com.common.dao.WanDatabase
+import com.sundayting.com.common.widget.Tip
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.network.onFailure
+import com.sundayting.com.network.onFinish
 import com.sundayting.com.network.onSuccess
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val wanDatabase: WanDatabase
 ) : BaseViewModel() {
 
     private val _uiState = MutableStateFlow(UiState())
@@ -23,7 +27,8 @@ class UserViewModel @Inject constructor(
     data class UiState(
         val loading: Boolean = false,
         val message: String? = null,
-        val userBean: UserBean? = null
+        val userBean: UserBean? = null,
+        val tipList: List<Tip> = listOf(),
     )
 
     init {
@@ -75,6 +80,47 @@ class UserViewModel @Inject constructor(
             }
         }
 
+    }
+
+    fun logout() {
+        _uiState.update {
+            it.copy(loading = true)
+        }
+        viewModelScope.launch {
+            if (userRepository.getLocalUserBean() == null) {
+                return@launch
+            }
+            userRepository.logout()
+                .onSuccess {
+                    if (it.responseBody.isSuccessful()) {
+                        _uiState.update { uiState ->
+                            uiState.copy(
+                                userBean = null
+                            )
+                        }
+                        wanDatabase.userDao().clearUser()
+                    } else {
+                        _uiState.update { uiState ->
+                            uiState.copy(tipList = uiState.tipList + Tip(it.responseBody.errorMsg.orEmpty()))
+                        }
+                    }
+                }.onFailure {
+                    _uiState.update { uiState ->
+                        uiState.copy(tipList = uiState.tipList + Tip(it.orEmpty()))
+                    }
+                }
+                .onFinish {
+                    _uiState.update {
+                        it.copy(loading = false)
+                    }
+                }
+        }
+    }
+
+    fun tipShown(tipId: String) {
+        _uiState.update { uiState ->
+            uiState.copy(tipList = uiState.tipList.filterNot { it.uuid == tipId })
+        }
     }
 
     fun messageShown() {
