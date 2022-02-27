@@ -8,4 +8,8 @@ class ArticleRepository @Inject constructor(
 
     suspend fun getArticle(page: Int) = articleRemoteResource.getArticle(page)
 
+    suspend fun collectArticle(id: Long) = articleRemoteResource.collectArticle(id)
+
+    suspend fun unCollectArticle(id: Long) = articleRemoteResource.unCollectArticle(id)
+
 }

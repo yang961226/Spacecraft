@@ -9,4 +9,8 @@ class ArticleRemoteResource @Inject constructor(
 
     suspend fun getArticle(page: Int) = wanAppService.article(page)
 
+    suspend fun collectArticle(id: Long) = wanAppService.collect(id)
+
+    suspend fun unCollectArticle(id: Long) = wanAppService.unCollect(id)
+
 }

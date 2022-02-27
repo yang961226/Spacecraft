@@ -1,8 +1,10 @@
 package com.sundayting.com.home
 
 import androidx.lifecycle.viewModelScope
+import com.sundayting.com.common.bean.ArticleBean
 import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.common.bean.BannerBean
+import com.sundayting.com.common.widget.Tip
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.home.article.ArticleRepository
 import com.sundayting.com.home.banner.BannerRepository
@@ -25,15 +27,99 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.immutable()
 
     data class UiState(
-        val banner: MutableList<BannerBean> = arrayListOf(),
+        val banner: List<BannerBean> = listOf(),
         val articleList: ArticleListBean? = null,
-        val message: String? = null
+        val message: String? = null,
+        val tipList: List<Tip> = listOf(),
+        val loading: Boolean = false
     )
 
     init {
         refreshBanner()
         // TODO: 临时，后续会有改动
         refreshArticle(0)
+    }
+
+    fun collectArticle(id: Long) {
+        viewModelScope.launch {
+            _uiState.update { uiState ->
+                uiState.copy(loading = true)
+            }
+            articleRepository.collectArticle(id)
+                .onSuccess {
+                    _uiState.update { uiState ->
+                        uiState.copy(
+                            articleList = uiState.articleList?.copy(
+                                datas = uiState.articleList.datas.let { articleBeanList ->
+                                    val newArticleBeanList = mutableListOf<ArticleBean>()
+                                    for (articleBean in articleBeanList) {
+                                        if (articleBean.id == id) {
+                                            newArticleBeanList.add(articleBean.copy(collect = true))
+                                        } else {
+                                            newArticleBeanList.add(articleBean)
+                                        }
+                                    }
+                                    newArticleBeanList
+                                }
+                            ),
+                            tipList = uiState.tipList + Tip("收藏成功"),
+                            loading = false
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update { uiState ->
+                        uiState.copy(
+                            tipList = uiState.tipList + Tip("收藏失败"),
+                            loading = false
+                        )
+                    }
+                }
+        }
+    }
+
+    fun unCollectArticle(id: Long) {
+        viewModelScope.launch {
+            _uiState.update { uiState ->
+                uiState.copy(loading = true)
+            }
+            articleRepository.unCollectArticle(id)
+                .onSuccess {
+                    _uiState.update { uiState ->
+                        uiState.copy(
+                            articleList = uiState.articleList?.copy(
+                                datas = uiState.articleList.datas.let { articleBeanList ->
+                                    val newArticleBeanList = mutableListOf<ArticleBean>()
+                                    for (articleBean in articleBeanList) {
+                                        if (articleBean.id == id) {
+                                            newArticleBeanList.add(articleBean.copy(collect = false))
+                                        } else {
+                                            newArticleBeanList.add(articleBean)
+                                        }
+                                    }
+                                    newArticleBeanList
+                                }
+                            ),
+                            tipList = uiState.tipList + Tip("取消收藏成功"),
+                            loading = false
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update { uiState ->
+                        uiState.copy(
+                            tipList = uiState.tipList + Tip("取消收藏失败"),
+                            loading = false
+                        )
+                    }
+                }
+        }
+    }
+
+    fun tipShown(tipId: String) {
+        _uiState.update { uiState ->
+            uiState.copy(tipList = uiState.tipList.filterNot { it.uuid == tipId })
+        }
     }
 
     private fun refreshBanner() {

@@ -1,6 +1,8 @@
 package com.sundayting.com.common.widget
 
-interface WaitDialogHelper {
+interface NotificationHelper {
+
+    fun showTip(tip: String)
 
     fun showPositiveDialog(message: String)
 
