@@ -113,11 +113,9 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
             userViewModel.uiState
                 .map { it.userBean }
                 .distinctUntilChanged()
-                .collect { userBean ->
-                    //监听到了用户退出登陆，重新刷新一下文章列表
-                    if (userBean == null) {
-                        viewModel.refreshBanner(true)
-                    }
+                .collect { _ ->
+                    //监听到了用户状态发生了变化，重新刷新一下文章列表
+                    viewModel.clearAndRefreshArticle()
                 }
         }
 
