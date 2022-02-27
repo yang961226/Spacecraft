@@ -5,9 +5,9 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity
+@Entity(tableName = "userBean")
 data class UserBean(
-    @PrimaryKey val id: Int = 0,
+    @PrimaryKey val id: Long = 0,
     @ColumnInfo(name = "email") val email: String? = null,
     @ColumnInfo(name = "rank") val rank: Long = 0,
     @ColumnInfo(name = "icon") val icon: String? = null,
