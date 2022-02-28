@@ -10,6 +10,9 @@ dependencies {
     api project(path: ':network')
     api project(path: ':ui')
 
+
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion"
+
     //room
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
