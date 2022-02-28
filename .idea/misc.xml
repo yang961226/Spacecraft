@@ -11,7 +11,10 @@
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_back.xml" value="0.1575" />
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_clear.xml" value="0.206" />
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/drawable-xxhdpi/svg_detail.xml" value="0.206" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/layout/activity_web.xml" value="0.33229166666666665" />
         <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/layout/fragment_web.xml" value="0.176" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/layout/layout_article.xml" value="0.33229166666666665" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/common/src/main/res/layout/layout_tool_bar.xml" value="0.2608695652173913" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16.xml" value="0.2815" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/radius_16_theme_2.xml" value="0.2135" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/drawable-xxhdpi/svg_add.xml" value="0.1" />
@@ -19,6 +22,7 @@
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/layout_article.xml" value="0.4" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/layout_search_bar.xml" value="0.4" />
         <entry key="..\:/project/MyProject/Spacecraft/app/home/src/main/res/layout/test.xml" value="0.33229166666666665" />
+        <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/activity_collect_article.xml" value="0.33229166666666665" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_llogin.xml" value="0.17889492753623187" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_login.xml" value="0.4" />
         <entry key="..\:/project/MyProject/Spacecraft/app/mine/src/main/res/layout/fragment_mine.xml" value="0.4" />

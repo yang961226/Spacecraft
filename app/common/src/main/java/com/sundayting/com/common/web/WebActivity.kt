@@ -48,7 +48,7 @@ class WebActivity : BaseBindingActivity<ActivityWebBinding>() {
     @SuppressLint("SetJavaScriptEnabled")
     private fun initView() {
         binding.run {
-            ivBack.setOnClickListener { finish() }
+            toolBar.ivBack.setOnClickListener { finish() }
 
             webView.run {
                 settings.run {

@@ -50,6 +50,13 @@ interface WanAppService {
     ): ApiResponse<WanBeanWrapper<ArticleListBean>>
 
     /**
+     * 获取收藏的文章
+     * @param page Int 页数
+     */
+    @GET("/lg/collect/list/{page}/json")
+    suspend fun getArticleCollected(@Path("page") page: Int): ApiResponse<WanBeanWrapper<ArticleListBean>>
+
+    /**
      * 收藏文章
      */
     @POST("/lg/collect/{id}/json")

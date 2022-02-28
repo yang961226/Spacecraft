@@ -9,11 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sundayting.com.common.UserViewModel
+import com.sundayting.com.common.article.ArticleAdapter
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
 import com.sundayting.com.common.widget.NotificationHelper
-import com.sundayting.com.home.article.ArticleAdapter
 import com.sundayting.com.home.databinding.FragmentHomeBinding
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
