@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.WebChromeClient
 import android.webkit.WebView
-import android.webkit.WebViewClient
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -55,8 +54,18 @@ class WebActivity : BaseBindingActivity<ActivityWebBinding>() {
                     javaScriptEnabled = true
                     loadWithOverviewMode = true
                 }
-                //如果不设置WebViewClient，请求会跳转系统浏览器
-                webViewClient = object : WebViewClient() {}
+
+//                webViewClient = object : WebViewClient() {
+//                    override fun shouldOverrideUrlLoading(
+//                        view: WebView,
+//                        request: WebResourceRequest
+//                    ): Boolean {
+//                        request.url.let { uri->
+//                            startActivity(Intent(Intent.ACTION_VIEW,uri))
+//                            return true
+//                        }
+//                    }
+//                }
 
                 //监听加载进度
                 webChromeClient = object : WebChromeClient() {

@@ -1,10 +1,15 @@
 package com.sundayting.com.mine
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.kongzue.dialogx.dialogs.MessageDialog
 import com.sundayting.com.common.article.ArticleAdapter
+import com.sundayting.com.common.web.WebActivity
+import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.NotificationHelper
 import com.sundayting.com.mine.collectarticle.CollectArticleViewModel
 import com.sundayting.com.mine.databinding.ActivityCollectArticleBinding
@@ -53,15 +58,70 @@ class CollectArticleActivity : BaseBindingActivity<ActivityCollectArticleBinding
                 }
         }
 
+        lifecycleScope.launchWhenCreated {
+            viewModel.uiStateFlow
+                .map { it.finishSwipeRefreshLoading }
+                .distinctUntilChanged()
+                .collect { finishSwipeRefreshLoading ->
+                    if (finishSwipeRefreshLoading) {
+                        binding.swipeRefreshLayout.isRefreshing = false
+                        viewModel.swipeRefreshComplete()
+                    }
+                }
+        }
+
         binding.run {
-            toolBar.ivBack.setOnClickListener { finish() }
+            toolBar.run {
+                ivBack.setOnClickListener { finish() }
+                tvTitle.text = "我的收藏"
+            }
             rvArticle.run {
                 adapter = articleAdapter.also {
                     //解决recyclerView异步加载数据时的刷新问题
                     //http://www.zyiz.net/tech/detail-134593.html
                     it.stateRestorationPolicy =
                         RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+                    it.onClickArticleItem = { clickedArticleItem, clickAction ->
+                        when (clickAction) {
+                            //当点击item时
+                            ArticleAdapter.ClickAction.NORMAL_CLICK -> {
+                                startActivity(
+                                    Intent(
+                                        this@CollectArticleActivity,
+                                        WebActivity::class.java
+                                    ).also { intent ->
+                                        intent.putExtras(
+                                            bundleOf(
+                                                "webViewBean" to WebViewBean(
+                                                    loadUrl = clickedArticleItem.link,
+                                                    title = clickedArticleItem.title
+                                                )
+                                            )
+                                        )
+                                    })
+                            }
+                            //点击收藏
+                            ArticleAdapter.ClickAction.COLLECT_CLICK -> {
+                                MessageDialog.build()
+                                    .setTitle("取消收藏")
+                                    .setMessage("取消收藏文章：\n[${clickedArticleItem.title}]?")
+                                    .setOkButton(
+                                        "确定"
+                                    ) { _, _ ->
+                                        viewModel.unCollectArticle(clickedArticleItem.id)
+                                        false
+                                    }
+                                    .setCancelButton("取消") { _, _ ->
+                                        false
+                                    }
+                                    .show()
+                            }
+                        }
+                    }
                 }
+            }
+            swipeRefreshLayout.setOnRefreshListener {
+                viewModel.clearAndGetArticleCollected()
             }
         }
     }
