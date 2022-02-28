@@ -114,7 +114,7 @@ inline fun <reified T> ApiResponse<T>.onFailure(action: (errorMsg: String?) -> U
     return this
 }
 
-inline fun <reified T> ApiResponse<T>.onFinish(action: ApiResponse<T>.() -> Unit): ApiResponse<T> {
+inline fun <reified T> ApiResponse<T>.onFinish(action: () -> Unit): ApiResponse<T> {
     action()
     return this
 }

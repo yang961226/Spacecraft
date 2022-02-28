@@ -30,6 +30,7 @@ class HomeViewModel @Inject constructor(
     val uiState = _uiState.immutable()
 
     data class UiState(
+        val swipeRefreshComplete: Boolean = false,
         val banner: List<BannerBean> = listOf(),
         val articleList: ArticleListBean? = null,
         val message: String? = null,
@@ -178,6 +179,11 @@ class HomeViewModel @Inject constructor(
         refreshArticle(0, true)
     }
 
+    /**
+     * 刷新文章列表
+     * @param page Int 当前的页数
+     * @param clear Boolean 是否清空之前的数据
+     */
     private fun refreshArticle(page: Int, clear: Boolean = false) {
         if (clear) {
             _uiState.update { uiState ->
@@ -191,8 +197,10 @@ class HomeViewModel @Inject constructor(
                     response.responseBody.data?.let { articleList ->
                         _uiState.update { uiState ->
                             uiState.copy(articleList = articleList.also {
-                                //补上之前的数据
-                                it.datas + uiState.articleList?.datas
+                                //如果不是清空的话，则要加上之前已经存在的数据
+                                if (!clear) {
+                                    it.datas + uiState.articleList?.datas
+                                }
                             })
                         }
                     }
@@ -202,6 +210,17 @@ class HomeViewModel @Inject constructor(
                         uiState.copy(message = "网络连接失败")
                     }
                 }
+                .onFinish {
+                    _uiState.update { uiState ->
+                        uiState.copy(swipeRefreshComplete = true)
+                    }
+                }
+        }
+    }
+
+    fun swipeRefreshCompleteKnown() {
+        _uiState.update { uiState ->
+            uiState.copy(swipeRefreshComplete = false)
         }
     }
 

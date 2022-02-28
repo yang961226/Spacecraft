@@ -63,4 +63,6 @@ ext{
     //Glide
     glideVersion="4.13.0"
 
+    swiperefreshlayoutVersion="1.1.0"
+
 }

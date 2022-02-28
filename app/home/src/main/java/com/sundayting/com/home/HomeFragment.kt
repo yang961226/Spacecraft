@@ -37,44 +37,49 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectUiState()
-        binding.rvArticle.run {
-            adapter = articleAdapter.also {
-                //解决recyclerView异步加载数据时的刷新问题
-                //http://www.zyiz.net/tech/detail-134593.html
-                it.stateRestorationPolicy =
-                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+        binding.run {
+            rvArticle.run {
+                adapter = articleAdapter.also {
+                    //解决recyclerView异步加载数据时的刷新问题
+                    //http://www.zyiz.net/tech/detail-134593.html
+                    it.stateRestorationPolicy =
+                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
 
-                //设置点击item的事件
-                it.onClickArticleItem = { clickedArticleItem, clickAction ->
-                    when (clickAction) {
-                        //当点击item时
-                        ArticleAdapter.ClickAction.NORMAL_CLICK -> {
-                            startActivity(
-                                Intent(
-                                    requireActivity(),
-                                    WebActivity::class.java
-                                ).also { intent ->
-                                    intent.putExtras(
-                                        bundleOf(
-                                            "webViewBean" to WebViewBean(
-                                                loadUrl = clickedArticleItem.link,
-                                                title = clickedArticleItem.title
+                    //设置点击item的事件
+                    it.onClickArticleItem = { clickedArticleItem, clickAction ->
+                        when (clickAction) {
+                            //当点击item时
+                            ArticleAdapter.ClickAction.NORMAL_CLICK -> {
+                                startActivity(
+                                    Intent(
+                                        requireActivity(),
+                                        WebActivity::class.java
+                                    ).also { intent ->
+                                        intent.putExtras(
+                                            bundleOf(
+                                                "webViewBean" to WebViewBean(
+                                                    loadUrl = clickedArticleItem.link,
+                                                    title = clickedArticleItem.title
+                                                )
                                             )
                                         )
-                                    )
-                                })
-                        }
-                        //当点击收藏按钮时
-                        ArticleAdapter.ClickAction.COLLECT_CLICK -> {
-                            if (clickedArticleItem.collect) {
-                                viewModel.unCollectArticle(clickedArticleItem.id)
-                            } else {
-                                viewModel.collectArticle(clickedArticleItem.id)
+                                    })
+                            }
+                            //当点击收藏按钮时
+                            ArticleAdapter.ClickAction.COLLECT_CLICK -> {
+                                if (clickedArticleItem.collect) {
+                                    viewModel.unCollectArticle(clickedArticleItem.id)
+                                } else {
+                                    viewModel.collectArticle(clickedArticleItem.id)
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
+            }
+            swipeRefreshLayout.setOnRefreshListener {
+                viewModel.clearAndRefreshArticle()
             }
         }
     }
@@ -133,6 +138,18 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                             .into(binding.ivBanner)
                     }
 
+                }
+        }
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiState
+                .map { it.swipeRefreshComplete }
+                .distinctUntilChanged()
+                .collect { complete ->
+                    if (complete) {
+                        viewModel.swipeRefreshCompleteKnown()
+                        binding.swipeRefreshLayout.isRefreshing = false
+                    }
                 }
         }
 
