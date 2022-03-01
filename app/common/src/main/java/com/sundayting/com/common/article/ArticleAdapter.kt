@@ -55,16 +55,21 @@ class ArticleAdapter @Inject constructor(
                     }
                     tvDate.text = articleBean.niceDate
                     tvTitle.text = articleBean.title
-                    if (articleBean.superChapterName.isEmpty()) {
-                        tvChapterName.text = articleBean.chapterName
-                    } else {
+                    if (articleBean.chapterName.isEmpty()) {
                         tvChapterName.text = articleBean.superChapterName
-                    }
-                    if (articleBean.collect) {
-                        ivCollect.setImageResource(R.drawable._collect)
                     } else {
-                        ivCollect.setImageResource(R.drawable.un_collect)
+                        tvChapterName.text = articleBean.chapterName
                     }
+                    if (articleBean.collectVisible) {
+                        if (articleBean.collect) {
+                            ivCollect.setImageResource(R.drawable._collect)
+                        } else {
+                            ivCollect.setImageResource(R.drawable.un_collect)
+                        }
+                    } else {
+                        ivCollect.visibility = View.GONE
+                    }
+
                 }
             }
         }

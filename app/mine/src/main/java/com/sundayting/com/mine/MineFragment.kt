@@ -13,6 +13,7 @@ import com.sundayting.com.common.dao.WanDatabase
 import com.sundayting.com.common.ext.toast
 import com.sundayting.com.common.widget.NotificationHelper
 import com.sundayting.com.mine.databinding.FragmentMineBinding
+import com.sundayting.com.mine.myarticle.MyArticleActivity
 import com.sundayting.com.ui.BaseBindingFragment
 import com.sundayting.com.ui.ext.launchAndRepeatWithViewLifecycle
 import dagger.hilt.android.AndroidEntryPoint
@@ -81,6 +82,15 @@ class MineFragment : BaseBindingFragment<FragmentMineBinding>() {
                         false
                     }
                     .show()
+            }
+            clArticle.setOnClickListener {
+                lifecycleScope.launch {
+                    if (wanDatabase.userDao().getUserLocal() == null) {
+                        notificationHelper.showTip("请登录后重试")
+                    } else {
+                        startActivity(Intent(requireContext(), MyArticleActivity::class.java))
+                    }
+                }
             }
         }
     }
