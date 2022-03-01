@@ -1,9 +1,6 @@
 package com.sundayting.com.common
 
-import com.sundayting.com.common.bean.ArticleListBean
-import com.sundayting.com.common.bean.BannerBean
-import com.sundayting.com.common.bean.UserBean
-import com.sundayting.com.common.bean.WanBeanWrapper
+import com.sundayting.com.common.bean.*
 import com.sundayting.com.network.ApiResponse
 import retrofit2.http.*
 
@@ -75,4 +72,10 @@ interface WanAppService {
     suspend fun publishArticle(@Query("title") title: String, @Query("link") link: String)
             : ApiResponse<WanBeanWrapper<Any>>
 
+
+    /**
+     * 我分享的文章
+     */
+    @GET("/user/lg/private_articles/{pageNum}/json")
+    suspend fun getMySharedArticle(@Path("pageNum") pageNum: Long): ApiResponse<WanBeanWrapper<MyCollectArticleBean>>
 }

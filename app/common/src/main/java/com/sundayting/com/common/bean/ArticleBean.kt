@@ -34,8 +34,10 @@ data class ArticleBean(
     val zan: Long = 0,
 //    val tags: List<*>? = null,
 
-    //这里的是自定义属性
+    //下面的均是自定义属性（非接口字段）
     val isTop: Boolean = false,
+    //收藏按钮是否可见
+    val collectVisible: Boolean = true,
 
     //收藏文章专属
     val originId: Long = 0,
