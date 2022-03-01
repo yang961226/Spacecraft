@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D1D1D1"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/layout_tool_bar" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/set_padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="文章标题"
+                android:textColor="#F60B0B"
+                android:textSize="@dimen/textMediumSize" />
+
+            <EditText
+                android:id="@+id/et_title"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/radius_16"
+                android:gravity="top"
+                android:hint="100字以内"
+                android:maxLength="100"
+                android:padding="10dp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="@dimen/textLargeSize" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="文章链接"
+                android:textColor="#333333"
+                android:textSize="@dimen/textMediumSize" />
+
+            <EditText
+                android:id="@+id/et_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/radius_16"
+                android:hint="请输入链接"
+                android:maxLines="100"
+                android:padding="8dp"
+                android:textColor="#333333"
+                android:textColorHint="#999999"
+                android:textSize="@dimen/textMediumSize" />
+
+            <include layout="@layout/layout_share_notice" />
+
+            <Button
+                android:id="@+id/btn_publish"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginBottom="100dp"
+                android:background="@drawable/radius_16"
+                android:gravity="center"
+                android:text="分享"
+                android:textColor="@color/white"
+                android:textSize="@dimen/textLargeSize" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -6,10 +6,13 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sundayting.com.common.UserViewModel
 import com.sundayting.com.common.article.ArticleAdapter
+import com.sundayting.com.common.dao.WanDatabase
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
 import com.sundayting.com.common.widget.GlidePro
@@ -31,12 +34,19 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
 
     @Inject
     lateinit var articleAdapter: ArticleAdapter
+
+    @Inject
+    lateinit var wanDatabase: WanDatabase
     private val viewModel by viewModels<HomeViewModel>()
     private val userViewModel by activityViewModels<UserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         collectUiState()
+        initView()
+    }
+
+    private fun initView() {
         binding.run {
             rvArticle.run {
                 adapter = articleAdapter.also {
@@ -80,6 +90,15 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
             }
             swipeRefreshLayout.setOnRefreshListener {
                 viewModel.clearAndRefreshArticle()
+            }
+            searchBar.ivAdd.setOnClickListener {
+                lifecycleScope.launchWhenCreated {
+                    if (wanDatabase.userDao().getUserLocal() != null) {
+                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPublishFragment())
+                    } else {
+                        notificationHelper.showTip("请登录后再尝试")
+                    }
+                }
             }
         }
     }

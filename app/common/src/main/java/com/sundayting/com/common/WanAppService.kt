@@ -68,4 +68,11 @@ interface WanAppService {
     @POST("/lg/uncollect_originId/{id}/json")
     suspend fun unCollect(@Path("id") id: Long): ApiResponse<WanBeanWrapper<Any>>
 
+    /**
+     * 发表文章
+     */
+    @POST("/lg/user_article/add/json")
+    suspend fun publishArticle(@Query("title") title: String, @Query("link") link: String)
+            : ApiResponse<WanBeanWrapper<Any>>
+
 }
