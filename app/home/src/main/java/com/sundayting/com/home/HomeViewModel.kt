@@ -1,13 +1,13 @@
 package com.sundayting.com.home
 
 import androidx.lifecycle.viewModelScope
+import com.sundayting.com.common.article.ArticleRepository
 import com.sundayting.com.common.bean.ArticleBean
 import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.common.bean.BannerBean
 import com.sundayting.com.common.dao.WanDatabase
 import com.sundayting.com.common.widget.Tip
 import com.sundayting.com.core.ext.immutable
-import com.sundayting.com.home.article.ArticleRepository
 import com.sundayting.com.home.banner.BannerRepository
 import com.sundayting.com.network.onFailure
 import com.sundayting.com.network.onFinish
@@ -33,7 +33,6 @@ class HomeViewModel @Inject constructor(
         val swipeRefreshComplete: Boolean = false,
         val banner: List<BannerBean> = listOf(),
         val articleList: ArticleListBean? = null,
-        val message: String? = null,
         val tipList: List<Tip> = listOf(),
         val loading: Boolean = false
     )
@@ -194,20 +193,19 @@ class HomeViewModel @Inject constructor(
             // TODO: 先固定实现一个不翻页的
             articleRepository.getArticle(page)
                 .onSuccess { response ->
-                    response.responseBody.data?.let { articleList ->
+                    response.responseBody.data?.let { articleListBean ->
                         _uiState.update { uiState ->
-                            uiState.copy(articleList = articleList.also {
-                                //如果不是清空的话，则要加上之前已经存在的数据
-                                if (!clear) {
-                                    it.datas + uiState.articleList?.datas
-                                }
-                            })
+                            uiState.copy(
+                                articleList = articleListBean.copy(
+                                    datas = articleListBean.datas + articleListBean.datas
+                                )
+                            )
                         }
                     }
                 }
                 .onFailure {
                     _uiState.update { uiState ->
-                        uiState.copy(message = "网络连接失败")
+                        uiState.copy(tipList = uiState.tipList + Tip("网络连接失败"))
                     }
                 }
                 .onFinish {
@@ -221,12 +219,6 @@ class HomeViewModel @Inject constructor(
     fun swipeRefreshCompleteKnown() {
         _uiState.update { uiState ->
             uiState.copy(swipeRefreshComplete = false)
-        }
-    }
-
-    fun messageShown() {
-        _uiState.update { uiState ->
-            uiState.copy(message = null)
         }
     }
 

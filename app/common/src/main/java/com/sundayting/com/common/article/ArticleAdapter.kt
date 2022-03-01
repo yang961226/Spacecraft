@@ -1,4 +1,4 @@
-package com.sundayting.com.home.article
+package com.sundayting.com.common.article
 
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -7,16 +7,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.sundayting.com.common.R
 import com.sundayting.com.common.bean.ArticleBean
-import com.sundayting.com.home.R
-import com.sundayting.com.home.databinding.LayoutArticleBinding
+import com.sundayting.com.common.databinding.LayoutArticleBinding
 import javax.inject.Inject
 
 class ArticleAdapter @Inject constructor(
     itemCallback: DiffUtil.ItemCallback<ArticleBean>,
 ) : ListAdapter<ArticleBean, RecyclerView.ViewHolder>(itemCallback) {
 
-    enum class ClickAction() {
+    enum class ClickAction {
         NORMAL_CLICK,
         COLLECT_CLICK,
     }
@@ -55,7 +55,11 @@ class ArticleAdapter @Inject constructor(
                     }
                     tvDate.text = articleBean.niceDate
                     tvTitle.text = articleBean.title
-                    tvChapterName.text = articleBean.superChapterName
+                    if (articleBean.superChapterName.isEmpty()) {
+                        tvChapterName.text = articleBean.chapterName
+                    } else {
+                        tvChapterName.text = articleBean.superChapterName
+                    }
                     if (articleBean.collect) {
                         ivCollect.setImageResource(R.drawable._collect)
                     } else {
