@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="share_information_1">只要是任何好文都可以分享哈，并不一定要是原创！投递的文章会进入广场 tab;</string>
+    <string name="share_information_2">CSDN，掘金，简书等官方博客站点会直接通过，不需要审核;</string>
+    <string name="share_information_3">其他个人站点会进入审核阶段，不要投递任何无效链接，测试的请尽快删除，否则可能会对你的账号产生一定影响;</string>
+    <string name="share_information_4">目前处于测试阶段，如果你发现500等错误，可以向玩安卓论坛提交日志，让我们一起使网站变得更好。</string>
+    <string name="share_information_5">本APP接口由玩安卓论坛免费开放，请不要投递任何违法信息</string>
+</resources>
