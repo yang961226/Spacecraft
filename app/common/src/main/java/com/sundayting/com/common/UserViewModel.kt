@@ -10,8 +10,7 @@ import com.sundayting.com.network.onFinish
 import com.sundayting.com.network.onSuccess
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +24,7 @@ class UserViewModel @Inject constructor(
     val uiState = _uiState.immutable()
 
     data class UiState(
+        val needRefreshHomeArticle: Boolean = false,
         val loading: Boolean = false,
         val message: String? = null,
         val userBean: UserBean? = null,
@@ -38,6 +38,23 @@ class UserViewModel @Inject constructor(
                     uiState.copy(userBean = userBeanCached)
                 }
             }
+        }
+        //每次userBean发生变化的时候，就要标记一下
+        viewModelScope.launch {
+            _uiState
+                .map { it.userBean }
+                .distinctUntilChanged()
+                .collect {
+                    _uiState.update { uiState ->
+                        uiState.copy(needRefreshHomeArticle = true)
+                    }
+                }
+        }
+    }
+
+    fun changeHomeArticleUpdateTag(needUpdate: Boolean) {
+        _uiState.update { uiState ->
+            uiState.copy(needRefreshHomeArticle = needUpdate)
         }
     }
 

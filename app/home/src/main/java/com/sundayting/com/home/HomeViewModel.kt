@@ -33,7 +33,6 @@ class HomeViewModel @Inject constructor(
         val swipeRefreshComplete: Boolean = false,
         val banner: List<BannerBean> = listOf(),
         val articleList: ArticleListBean? = null,
-        val message: String? = null,
         val tipList: List<Tip> = listOf(),
         val loading: Boolean = false
     )
@@ -206,7 +205,7 @@ class HomeViewModel @Inject constructor(
                 }
                 .onFailure {
                     _uiState.update { uiState ->
-                        uiState.copy(message = "网络连接失败")
+                        uiState.copy(tipList = uiState.tipList + Tip("网络连接失败"))
                     }
                 }
                 .onFinish {
@@ -220,12 +219,6 @@ class HomeViewModel @Inject constructor(
     fun swipeRefreshCompleteKnown() {
         _uiState.update { uiState ->
             uiState.copy(swipeRefreshComplete = false)
-        }
-    }
-
-    fun messageShown() {
-        _uiState.update { uiState ->
-            uiState.copy(message = null)
         }
     }
 

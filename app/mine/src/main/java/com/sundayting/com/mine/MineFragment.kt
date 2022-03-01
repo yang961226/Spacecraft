@@ -3,6 +3,7 @@ package com.sundayting.com.mine
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -32,6 +33,12 @@ class MineFragment : BaseBindingFragment<FragmentMineBinding>() {
     lateinit var notificationHelper: NotificationHelper
     private val userViewModel by activityViewModels<UserViewModel>()
 
+    private val activityLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            //回来的时候需要刷新主页文章
+            userViewModel.changeHomeArticleUpdateTag(true)
+        }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,7 +58,12 @@ class MineFragment : BaseBindingFragment<FragmentMineBinding>() {
                     if (wanDatabase.userDao().getUserLocal() == null) {
                         notificationHelper.showTip("请先登陆")
                     } else {
-                        startActivity(Intent(requireContext(), CollectArticleActivity::class.java))
+                        activityLauncher.launch(
+                            Intent(
+                                requireContext(),
+                                CollectArticleActivity::class.java
+                            )
+                        )
                     }
                 }
             }

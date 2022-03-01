@@ -44,9 +44,15 @@ class CollectArticleViewModel @Inject constructor(
 
     fun unCollectArticle(id: Long) {
         viewModelScope.launch {
-            articleRepository.unCollectArticle(id.toLong())
+            _uiStateFlow.update { uiState ->
+                uiState.copy(loading = true)
+            }
+            articleRepository.unCollectArticle(id)
                 .onSuccess {
                     if (it.responseBody.isSuccessful()) {
+                        _uiStateFlow.update { uiState ->
+                            uiState.copy(loading = false)
+                        }
                         clearAndGetArticleCollected()
                     }
                 }
@@ -63,13 +69,16 @@ class CollectArticleViewModel @Inject constructor(
                 .onSuccess { response ->
                     if (response.responseBody.isSuccessful()) {
                         response.responseBody.data?.let { articleListBean ->
-
-                            // TODO: 后面打算建立一个专门用于已收藏的实体类，因为已收藏的接口提供的信息少一点
                             //全部变成已收藏（因为接口没提供已收藏的字段）
                             articleListBean.copy(
                                 datas = mutableListOf<ArticleBean>().apply {
                                     articleListBean.datas.forEach {
-                                        this.add(it.copy(collect = true))
+                                        this.add(
+                                            it.copy(
+                                                collect = true,
+                                                id = it.originId,
+                                            )
+                                        )
                                     }
                                 }
                             ).let { newArticleListBean ->
@@ -84,8 +93,6 @@ class CollectArticleViewModel @Inject constructor(
                                     )
                                 }
                             }
-
-
                         }
                     }
                 }

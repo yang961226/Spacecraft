@@ -116,11 +116,13 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         //监听activity的UserBean，因为要监控是否用户退出了登陆，如果退出了登陆，就重新刷新列表数据（因为涉及收藏）
         launchAndRepeatWithViewLifecycle {
             userViewModel.uiState
-                .map { it.userBean }
+                .map { it.needRefreshHomeArticle }
                 .distinctUntilChanged()
-                .collect { _ ->
-                    //监听到了用户状态发生了变化，重新刷新一下文章列表
-                    viewModel.clearAndRefreshArticle()
+                .collect { updated ->
+                    if (updated) {
+                        viewModel.clearAndRefreshArticle()
+                        userViewModel.changeHomeArticleUpdateTag(false)
+                    }
                 }
         }
 

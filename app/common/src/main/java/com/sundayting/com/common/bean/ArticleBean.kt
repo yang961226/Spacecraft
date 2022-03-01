@@ -35,5 +35,8 @@ data class ArticleBean(
 //    val tags: List<*>? = null,
 
     //这里的是自定义属性
-    val isTop: Boolean = false
+    val isTop: Boolean = false,
+
+    //收藏文章专属
+    val originId: Long = 0,
 )

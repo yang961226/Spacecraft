@@ -55,7 +55,11 @@ class ArticleAdapter @Inject constructor(
                     }
                     tvDate.text = articleBean.niceDate
                     tvTitle.text = articleBean.title
-                    tvChapterName.text = articleBean.superChapterName
+                    if (articleBean.superChapterName.isEmpty()) {
+                        tvChapterName.text = articleBean.chapterName
+                    } else {
+                        tvChapterName.text = articleBean.superChapterName
+                    }
                     if (articleBean.collect) {
                         ivCollect.setImageResource(R.drawable._collect)
                     } else {
