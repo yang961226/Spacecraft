@@ -37,6 +37,10 @@ class RegisterFragment : BaseBindingFragment<FragmentRegisterBinding>() {
         previousSavedStateHandle.set(REGISTER_SUCCESSFUL, false)
 
         binding.run {
+            toolBar.run {
+                tvTitle.text = "注册"
+                ivBack.setOnClickListener { findNavController().navigateUp() }
+            }
             btnRegister.setOnClickListener {
                 viewModel.register(
                     etUsername.text.toString(),

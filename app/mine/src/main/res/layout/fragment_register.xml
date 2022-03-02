@@ -4,6 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/layout_tool_bar" />
+
     <EditText
         android:id="@+id/et_username"
         android:layout_width="match_parent"
@@ -18,7 +22,7 @@
         android:textColor="@color/primaryTextColor"
         android:textSize="@dimen/textLargeSize"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tool_bar" />
 
 
     <ImageView
