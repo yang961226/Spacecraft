@@ -4,6 +4,7 @@
 
     <application>
         <activity android:name=".CollectArticleActivity" />
+        <activity android:name=".IntegralActivity" />
         <activity android:name=".myarticle.MyArticleActivity" />
     </application>
 

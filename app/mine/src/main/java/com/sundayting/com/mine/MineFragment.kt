@@ -54,6 +54,17 @@ class MineFragment : BaseBindingFragment<FragmentMineBinding>() {
             ivUserIcon.setOnClickListener {
                 findNavController().navigate(MineFragmentDirections.actionMineFragmentToLoginFragment())
             }
+
+            clIntegral.setOnClickListener {
+                lifecycleScope.launch {
+                    if (wanDatabase.userDao().getUserLocal() == null) {
+                        notificationHelper.showTip("请先登陆")
+                    } else {
+                        startActivity(Intent(requireContext(), IntegralActivity::class.java))
+                    }
+                }
+            }
+
             clCollect.setOnClickListener {
                 lifecycleScope.launch {
                     if (wanDatabase.userDao().getUserLocal() == null) {

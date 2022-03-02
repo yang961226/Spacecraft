@@ -1,5 +1,6 @@
 package com.sundayting.com.common.bean
 
+@Deprecated("废弃", replaceWith = ReplaceWith("替换ListBean"))
 data class ArticleListBean(
     val curPage: Long = 0,
     val offset: Long = 0,

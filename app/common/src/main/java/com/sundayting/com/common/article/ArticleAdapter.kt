@@ -1,6 +1,5 @@
 package com.sundayting.com.common.article
 
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,7 +35,6 @@ class ArticleAdapter @Inject constructor(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        Resources.getSystem().assets
         getItem(position).let { articleBean ->
             if (holder is ArticleViewHolder) {
                 holder.binding.run {

@@ -72,6 +72,12 @@ interface WanAppService {
     suspend fun publishArticle(@Query("title") title: String, @Query("link") link: String)
             : ApiResponse<WanBeanWrapper<Any>>
 
+    /**
+     * 积分记录
+     */
+    @GET("/lg/coin/list/{pageNum}/json")
+    suspend fun getIntegralRecord(@Path("pageNum") page: Long): ApiResponse<WanBeanWrapper<ListBean<IntegralBean>>>
+
 
     /**
      * 我分享的文章
