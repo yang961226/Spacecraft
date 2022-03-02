@@ -29,6 +29,10 @@ class LoginFragment : BaseBindingFragment<FragmentLoginBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.run {
+            toolBar.run {
+                tvTitle.text = "登陆"
+                ivBack.setOnClickListener { findNavController().navigateUp() }
+            }
             btnLogin.setOnClickListener {
                 viewModel.login(
                     this.tietUsername.text.toString(),
