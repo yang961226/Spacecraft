@@ -1,9 +1,6 @@
 package com.sundayting.com.common
 
-import com.sundayting.com.common.bean.ArticleListBean
-import com.sundayting.com.common.bean.BannerBean
-import com.sundayting.com.common.bean.UserBean
-import com.sundayting.com.common.bean.WanBeanWrapper
+import com.sundayting.com.common.bean.*
 import com.sundayting.com.network.ApiResponse
 import retrofit2.http.*
 
@@ -74,5 +71,11 @@ interface WanAppService {
     @POST("/lg/user_article/add/json")
     suspend fun publishArticle(@Query("title") title: String, @Query("link") link: String)
             : ApiResponse<WanBeanWrapper<Any>>
+
+    /**
+     * 积分记录
+     */
+    @GET("/lg/coin/list/{pageNum}/json")
+    suspend fun getIntegralRecord(@Path("pageNum") page: Long): ApiResponse<WanBeanWrapper<ListBean<IntegralBean>>>
 
 }
