@@ -23,7 +23,7 @@ class IntegralViewModel @Inject constructor(
     val uiStateFlow = _uiStateFlow.immutable()
 
     data class UiState(
-        val swipeLoading: Boolean = false,
+        val swipeRefreshing: Boolean = false,
         val tipList: List<Tip> = emptyList(),
         val integralBeanList: List<IntegralBean> = emptyList(),
     )
@@ -49,7 +49,7 @@ class IntegralViewModel @Inject constructor(
     private fun getIntegralRecord(page: Long, clear: Boolean) {
         _uiStateFlow.update { uiState ->
             uiState.copy(
-                swipeLoading = clear
+                swipeRefreshing = clear
             )
         }
         viewModelScope.launch {
@@ -59,7 +59,7 @@ class IntegralViewModel @Inject constructor(
                         it.responseBody.data?.datas?.let { integralBeanList ->
                             _uiStateFlow.update { uiState ->
                                 uiState.copy(
-                                    integralBeanList = if (clear) integralBeanList else uiState.integralBeanList + integralBeanList
+                                    integralBeanList = (if (clear) emptyList() else uiState.integralBeanList) + integralBeanList
                                 )
                             }
                         }
@@ -82,7 +82,7 @@ class IntegralViewModel @Inject constructor(
                     if (clear) {
                         _uiStateFlow.update { uiState ->
                             uiState.copy(
-                                swipeLoading = false
+                                swipeRefreshing = false
                             )
                         }
                     }
