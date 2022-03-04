@@ -52,13 +52,12 @@ class MyArticleActivity : BaseBindingActivity<ActivityMyArticleBinding>() {
         lifecycleScope.launchWhenCreated {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiStateFlow
-                    .map { it.loadingState }
+                    .map { it.tipList }
                     .distinctUntilChanged()
-                    .collect { loadingState ->
-                        if (loadingState.loading) {
-                            notificationHelper.showLoadingDialog(loadingState.message)
-                        } else {
-                            notificationHelper.dismissDialog()
+                    .collect { tipList ->
+                        tipList.firstOrNull()?.let { tip ->
+                            notificationHelper.showTip(tip.content)
+                            viewModel.tipShown(tip.uuid)
                         }
                     }
             }
@@ -67,13 +66,10 @@ class MyArticleActivity : BaseBindingActivity<ActivityMyArticleBinding>() {
         lifecycleScope.launchWhenCreated {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiStateFlow
-                    .map { it.swipeRefreshFinished }
+                    .map { it.swipeRefreshing }
                     .distinctUntilChanged()
-                    .collect { finished ->
-                        if (finished) {
-                            viewModel.swipeRefreshFinishedKnown()
-                            binding.swipeRefreshLayout.isRefreshing = false
-                        }
+                    .collect { swipeRefreshing ->
+                        binding.swipeRefreshLayout.isRefreshing = swipeRefreshing
                     }
             }
         }

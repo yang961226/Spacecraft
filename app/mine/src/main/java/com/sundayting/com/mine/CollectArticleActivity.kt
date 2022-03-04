@@ -38,10 +38,8 @@ class CollectArticleActivity : BaseBindingActivity<ActivityCollectArticleBinding
             viewModel.uiStateFlow
                 .map { it.articleList }
                 .distinctUntilChanged()
-                .collect { articleListBean ->
-                    if (articleListBean != null) {
-                        articleAdapter.submitList(articleListBean.datas)
-                    }
+                .collect { articleBeanList ->
+                    articleAdapter.submitList(articleBeanList)
                 }
         }
 
@@ -60,13 +58,10 @@ class CollectArticleActivity : BaseBindingActivity<ActivityCollectArticleBinding
 
         lifecycleScope.launchWhenCreated {
             viewModel.uiStateFlow
-                .map { it.finishSwipeRefreshLoading }
+                .map { it.swipeRefreshing }
                 .distinctUntilChanged()
-                .collect { finishSwipeRefreshLoading ->
-                    if (finishSwipeRefreshLoading) {
-                        binding.swipeRefreshLayout.isRefreshing = false
-                        viewModel.swipeRefreshComplete()
-                    }
+                .collect { swipeRefreshing ->
+                    binding.swipeRefreshLayout.isRefreshing = swipeRefreshing
                 }
         }
 

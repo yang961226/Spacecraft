@@ -38,7 +38,7 @@ class IntegralAdapter @Inject constructor(
                 holder.binding.run {
                     tvAddIntegralMode.text = item.reason
                     tvDate.text = simpleDateFormat.format(Date(item.date))
-                    tvAddIntegral.text = item.coinCount.toString()
+                    tvAddIntegral.text = "+${item.coinCount}"
                 }
             }
         }

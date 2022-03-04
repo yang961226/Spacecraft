@@ -3,7 +3,6 @@ package com.sundayting.com.mine.collectarticle
 import androidx.lifecycle.viewModelScope
 import com.sundayting.com.common.article.ArticleRepository
 import com.sundayting.com.common.bean.ArticleBean
-import com.sundayting.com.common.bean.ArticleListBean
 import com.sundayting.com.core.ext.immutable
 import com.sundayting.com.network.onFinish
 import com.sundayting.com.network.onSuccess
@@ -23,8 +22,8 @@ class CollectArticleViewModel @Inject constructor(
     val uiStateFlow = _uiStateFlow.immutable()
 
     data class UiState(
-        val finishSwipeRefreshLoading: Boolean = false,
-        val articleList: ArticleListBean? = null,
+        val swipeRefreshing: Boolean = false,
+        val articleList: List<ArticleBean> = emptyList(),
         val loading: Boolean = false,
     )
 
@@ -34,12 +33,6 @@ class CollectArticleViewModel @Inject constructor(
 
     fun clearAndGetArticleCollected() {
         getArticleCollected(0, true)
-    }
-
-    fun swipeRefreshComplete() {
-        _uiStateFlow.update { uiState ->
-            uiState.copy(finishSwipeRefreshLoading = false)
-        }
     }
 
     fun unCollectArticle(id: Long) {
@@ -62,43 +55,31 @@ class CollectArticleViewModel @Inject constructor(
     private fun getArticleCollected(page: Int, clear: Boolean) {
         viewModelScope.launch {
             _uiStateFlow.update { uiState ->
-                uiState.copy(loading = true)
+                uiState.copy(
+                    swipeRefreshing = clear,
+                )
             }
             articleRepository.getArticleCollected(page)
-                // TODO: 部分失败逻辑暂时不写，懒
                 .onSuccess { response ->
                     if (response.responseBody.isSuccessful()) {
-                        response.responseBody.data?.let { articleListBean ->
-                            //全部变成已收藏（因为接口没提供已收藏的字段）
-                            articleListBean.copy(
-                                datas = mutableListOf<ArticleBean>().apply {
-                                    articleListBean.datas.forEach {
-                                        this.add(
-                                            it.copy(
-                                                collect = true,
-                                                id = it.originId,
-                                            )
-                                        )
-                                    }
-                                }
-                            ).let { newArticleListBean ->
-                                _uiStateFlow.update { uiState ->
-                                    uiState.copy(
-                                        //如果是清除模式，则只引入最新一次加载的数据，如果不是，则把之前的也一起加进去
-                                        articleList = if (clear) newArticleListBean else newArticleListBean.copy(
-                                            datas = (uiState.articleList?.datas
-                                                ?: emptyList()) + newArticleListBean.datas
-                                        ),
-                                        finishSwipeRefreshLoading = true
-                                    )
-                                }
+                        response.responseBody.data?.datas?.map {
+                            it.copy(
+                                collect = true,
+                                id = it.originId
+                            )
+                        }?.let { articleBeanList ->
+                            _uiStateFlow.update { uiState ->
+                                uiState.copy(
+                                    //如果是清空，则只添加新的list，如果不是清空，则把旧的也拼接上去
+                                    articleList = (if (clear) emptyList() else uiState.articleList) + articleBeanList
+                                )
                             }
                         }
                     }
                 }
                 .onFinish {
                     _uiStateFlow.update { uiState ->
-                        uiState.copy(loading = false)
+                        uiState.copy(swipeRefreshing = false)
                     }
                 }
         }

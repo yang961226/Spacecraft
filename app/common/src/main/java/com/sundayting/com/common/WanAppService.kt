@@ -44,14 +44,14 @@ interface WanAppService {
     @GET("/article/list/{page}/json")
     suspend fun article(
         @Path("page") page: Int
-    ): ApiResponse<WanBeanWrapper<ArticleListBean>>
+    ): ApiResponse<WanBeanWrapper<ListBean<ArticleBean>>>
 
     /**
      * 获取收藏的文章
      * @param page Int 页数
      */
     @GET("/lg/collect/list/{page}/json")
-    suspend fun getArticleCollected(@Path("page") page: Int): ApiResponse<WanBeanWrapper<ArticleListBean>>
+    suspend fun getArticleCollected(@Path("page") page: Int): ApiResponse<WanBeanWrapper<ListBean<ArticleBean>>>
 
     /**
      * 收藏文章

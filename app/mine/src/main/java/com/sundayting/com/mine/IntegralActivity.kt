@@ -38,7 +38,7 @@ class IntegralActivity : BaseBindingActivity<ActivityIntegralBinding>() {
         lifecycleScope.launchWhenCreated {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.uiStateFlow
-                    .map { it.swipeLoading }
+                    .map { it.swipeRefreshing }
                     .distinctUntilChanged()
                     .collect { swipeLoading ->
                         binding.swipeRefreshLayout.isRefreshing = swipeLoading

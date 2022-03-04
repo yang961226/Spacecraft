@@ -107,7 +107,7 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         //监听收藏进度
         // TODO: 发现一个问题，loading不止有状态，还应该要有loading的显示字段，后续修改为传回一个对象，包含两者 
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
+            viewModel.uiStateFlow
                 .map { it.loading }
                 .distinctUntilChanged()
                 .collect { loading ->
@@ -121,7 +121,7 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
 
         //监听tip
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
+            viewModel.uiStateFlow
                 .map { it.tipList }
                 .distinctUntilChanged()
                 .collect { tipList ->
@@ -147,7 +147,7 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
 
         //监听Banner
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
+            viewModel.uiStateFlow
                 .map { it.banner }
                 .distinctUntilChanged()
                 .collect { beanList ->
@@ -163,26 +163,21 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         }
 
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
-                .map { it.swipeRefreshComplete }
+            viewModel.uiStateFlow
+                .map { it.swipeRefreshing }
                 .distinctUntilChanged()
-                .collect { complete ->
-                    if (complete) {
-                        viewModel.swipeRefreshCompleteKnown()
-                        binding.swipeRefreshLayout.isRefreshing = false
-                    }
+                .collect { swipeRefreshing ->
+                    binding.swipeRefreshLayout.isRefreshing = swipeRefreshing
                 }
         }
 
         //监听文章
         launchAndRepeatWithViewLifecycle {
-            viewModel.uiState
+            viewModel.uiStateFlow
                 .map { it.articleList }
                 .distinctUntilChanged()
                 .collect {
-                    it?.datas?.let { articleBeanList ->
-                        articleAdapter.submitList(articleBeanList)
-                    }
+                    articleAdapter.submitList(it)
                 }
         }
     }
