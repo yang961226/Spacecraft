@@ -3,15 +3,17 @@ package com.sundayting.com.common.article
 import javax.inject.Inject
 
 class ArticleRepository @Inject constructor(
-    private val articleRemoteResource: ArticleRemoteResource,
+    private val articleRemoteSource: ArticleRemoteSource,
 ) {
 
-    suspend fun getArticle(page: Int) = articleRemoteResource.getArticle(page)
+    fun getArticlePagingData() = articleRemoteSource.getArticlePagingData()
 
-    suspend fun collectArticle(id: Long) = articleRemoteResource.collectArticle(id)
+    suspend fun getArticle(page: Int) = articleRemoteSource.getArticle(page)
 
-    suspend fun unCollectArticle(id: Long) = articleRemoteResource.unCollectArticle(id)
+    suspend fun collectArticle(id: Long) = articleRemoteSource.collectArticle(id)
 
-    suspend fun getArticleCollected(page: Int) = articleRemoteResource.getArticleCollected(page)
+    suspend fun unCollectArticle(id: Long) = articleRemoteSource.unCollectArticle(id)
+
+    suspend fun getArticleCollected(page: Int) = articleRemoteSource.getArticleCollected(page)
 
 }

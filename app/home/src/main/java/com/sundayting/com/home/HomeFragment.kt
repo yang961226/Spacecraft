@@ -8,10 +8,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.sundayting.com.common.UserViewModel
-import com.sundayting.com.common.article.ArticleAdapter
+import com.sundayting.com.common.article.ArticlePagingAdapter
 import com.sundayting.com.common.dao.WanDatabase
 import com.sundayting.com.common.web.WebActivity
 import com.sundayting.com.common.web.WebViewBean
@@ -24,6 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,8 +32,11 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
     @Inject
     lateinit var notificationHelper: NotificationHelper
 
+//    @Inject
+//    lateinit var articleAdapter: ArticleAdapter
+
     @Inject
-    lateinit var articleAdapter: ArticleAdapter
+    lateinit var articlePagingAdapter: ArticlePagingAdapter
 
     @Inject
     lateinit var wanDatabase: WanDatabase
@@ -48,18 +51,15 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
 
     private fun initView() {
         binding.run {
-            rvArticle.run {
-                adapter = articleAdapter.also {
-                    //解决recyclerView异步加载数据时的刷新问题
-                    //http://www.zyiz.net/tech/detail-134593.html
-                    it.stateRestorationPolicy =
-                        RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+            // TODO: 临时关闭下拉刷新
+            swipeRefreshLayout.isEnabled = false
 
-                    //设置点击item的事件
+            rvArticle.run {
+                adapter = articlePagingAdapter.also {
                     it.onClickArticleItem = { clickedArticleItem, clickAction ->
                         when (clickAction) {
                             //当点击item时
-                            ArticleAdapter.ClickAction.NORMAL_CLICK -> {
+                            ArticlePagingAdapter.ClickAction.NORMAL_CLICK -> {
                                 startActivity(
                                     Intent(
                                         requireActivity(),
@@ -76,7 +76,7 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                                     })
                             }
                             //当点击收藏按钮时
-                            ArticleAdapter.ClickAction.COLLECT_CLICK -> {
+                            ArticlePagingAdapter.ClickAction.COLLECT_CLICK -> {
                                 if (clickedArticleItem.collect) {
                                     viewModel.unCollectArticle(clickedArticleItem.id)
                                 } else {
@@ -84,19 +84,18 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
                                 }
                             }
                         }
-
                     }
                 }
-            }
-            swipeRefreshLayout.setOnRefreshListener {
-                viewModel.clearAndRefreshArticle()
-            }
-            searchBar.ivAdd.setOnClickListener {
-                lifecycleScope.launchWhenCreated {
-                    if (wanDatabase.userDao().getUserLocal() != null) {
-                        findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPublishFragment())
-                    } else {
-                        notificationHelper.showTip("请登录后再尝试")
+//                swipeRefreshLayout.setOnRefreshListener {
+//                    viewModel.clearAndRefreshArticle()
+//                }
+                searchBar.ivAdd.setOnClickListener {
+                    lifecycleScope.launchWhenCreated {
+                        if (wanDatabase.userDao().getUserLocal() != null) {
+                            findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToPublishFragment())
+                        } else {
+                            notificationHelper.showTip("请登录后再尝试")
+                        }
                     }
                 }
             }
@@ -104,8 +103,18 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
     }
 
     private fun collectUiState() {
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.uiStateFlow
+                .mapNotNull { it.articlePagingData }
+                .distinctUntilChanged()
+                .collect { pagingData ->
+                    articlePagingAdapter.submitData(pagingData)
+                }
+        }
+
         //监听收藏进度
-        // TODO: 发现一个问题，loading不止有状态，还应该要有loading的显示字段，后续修改为传回一个对象，包含两者 
+        // TODO: 发现一个问题，loading不止有状态，还应该要有loading的显示字段，后续修改为传回一个对象，包含两者
         launchAndRepeatWithViewLifecycle {
             viewModel.uiStateFlow
                 .map { it.loading }
@@ -133,17 +142,17 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         }
 
         //监听activity的UserBean，因为要监控是否用户退出了登陆，如果退出了登陆，就重新刷新列表数据（因为涉及收藏）
-        launchAndRepeatWithViewLifecycle {
-            userViewModel.uiState
-                .map { it.needRefreshHomeArticle }
-                .distinctUntilChanged()
-                .collect { updated ->
-                    if (updated) {
-                        viewModel.clearAndRefreshArticle()
-                        userViewModel.changeHomeArticleUpdateTag(false)
-                    }
-                }
-        }
+//        launchAndRepeatWithViewLifecycle {
+//            userViewModel.uiState
+//                .map { it.needRefreshHomeArticle }
+//                .distinctUntilChanged()
+//                .collect { updated ->
+//                    if (updated) {
+//                        viewModel.clearAndRefreshArticle()
+//                        userViewModel.changeHomeArticleUpdateTag(false)
+//                    }
+//                }
+//        }
 
         //监听Banner
         launchAndRepeatWithViewLifecycle {
@@ -172,14 +181,14 @@ class HomeFragment : BaseBindingFragment<FragmentHomeBinding>() {
         }
 
         //监听文章
-        launchAndRepeatWithViewLifecycle {
-            viewModel.uiStateFlow
-                .map { it.articleList }
-                .distinctUntilChanged()
-                .collect {
-                    articleAdapter.submitList(it)
-                }
-        }
+//        launchAndRepeatWithViewLifecycle {
+//            viewModel.uiStateFlow
+//                .map { it.articleList }
+//                .distinctUntilChanged()
+//                .collect {
+//                    articleAdapter.submitList(it)
+//                }
+//        }
     }
 
 }

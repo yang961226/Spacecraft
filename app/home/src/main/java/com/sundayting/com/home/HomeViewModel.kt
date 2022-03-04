@@ -1,6 +1,8 @@
 package com.sundayting.com.home
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.sundayting.com.common.article.ArticleRepository
 import com.sundayting.com.common.bean.ArticleBean
 import com.sundayting.com.common.bean.BannerBean
@@ -14,6 +16,7 @@ import com.sundayting.com.network.onSuccess
 import com.sundayting.com.ui.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,6 +34,8 @@ class HomeViewModel @Inject constructor(
     data class UiState(
         val swipeRefreshing: Boolean = false,
         val banner: List<BannerBean> = listOf(),
+        val articlePagingData: PagingData<ArticleBean>? = null,
+        @Deprecated("废弃")
         val articleList: List<ArticleBean> = emptyList(),
         val tipList: List<Tip> = listOf(),
         val loading: Boolean = false
@@ -38,9 +43,25 @@ class HomeViewModel @Inject constructor(
 
     init {
         refreshBanner()
-        clearAndRefreshArticle()
+        collectArticlePagingData()
     }
 
+    private fun collectArticlePagingData() {
+        viewModelScope.launch {
+            articleRepository.getArticlePagingData()
+                //cachedIn(viewModelScope)用于将服务器返回的数据在 viewModelScope 这个作用域内进行缓存，假如手机横竖屏发生了旋转导致 ui 重新创建，Paging 3 就可以直接读取缓存中的数据，而不用重新发起网络请求了。
+                .cachedIn(viewModelScope)
+                .collect { pagingData ->
+                    _uiStateFlow.update { uiState ->
+                        uiState.copy(
+                            articlePagingData = pagingData
+                        )
+                    }
+                }
+        }
+    }
+
+    @Deprecated("废弃")
     fun collectArticle(id: Long) {
         viewModelScope.launch {
             if (wanDatabase.userDao().getUserLocal() == null) {
@@ -165,6 +186,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    @Deprecated("废弃")
     fun clearAndRefreshArticle() {
         refreshArticle(0, true)
     }

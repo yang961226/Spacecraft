@@ -11,6 +11,7 @@ import com.sundayting.com.common.bean.ArticleBean
 import com.sundayting.com.common.databinding.LayoutArticleBinding
 import javax.inject.Inject
 
+@Deprecated("废弃，使用pagingAdapter")
 class ArticleAdapter @Inject constructor(
     itemCallback: DiffUtil.ItemCallback<ArticleBean>,
 ) : ListAdapter<ArticleBean, RecyclerView.ViewHolder>(itemCallback) {

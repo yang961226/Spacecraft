@@ -13,6 +13,9 @@ dependencies {
 
     api "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion"
 
+    //paging3
+    api "androidx.paging:paging-runtime:$pagingVersion"
+
     //room
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
